@@ -1,0 +1,63 @@
+{% extends "index.html" %}
+{% block title %} Rezept X {% endblock%}
+{% block content %}
+    <div class="row"> <!-- picture of recipe and details -->
+        <div class="col-md-4 cols-12 offset-md-1">
+            <h4>Recipe name</h4>
+            <img src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www" alt="Salad">
+        </div>
+        <div class="col-md-4 cols-12 offset-md-1 align-self-center " > 
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Tags:</li>
+                        <li class="list-group-item">Difficulty:</li>
+                        <li class="list-group-item">Preparation time:</li>
+                        <li class="list-group-item">Cooking time:</li>
+                      </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 cols-12 offset-md-1">
+            <h4>Ingredients</h4>
+            <table class="table">
+                <tbody>
+                  <tr>
+                    <td>2 tomatoes</td>
+                    <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+                        <label for="checkbox_id"></label>
+                        </td>
+                  </tr>
+                  <tr>
+                    <td>1 cucumber</td>
+                    <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+                        <label for="checkbox_id"></label>
+                        </td></td>
+                  </tr>
+                  <tr>
+                    <td>olives</td>
+                    <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+                        <label for="checkbox_id"></label>
+                        </td></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              etc
+        </div>
+        <div class="col-md-4 cols-12 offset-md-1">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Instructions</h4>
+                    <p class="card-text"> Wash your vegetables and cut them. add as many olives as your heart desires. Drench in olive oil and add the lemon. Serve!!
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
