@@ -1,162 +1,108 @@
-<!-- Show this page as homepage, so after user has logged in!-->
-<!--von hier-->
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        <!-- Bootstrap JavaScript plugin and dependency -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-        <!-- checkbox symbol --> 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">        
-        <style>
-            #left{
-                background-color: red;
-            }
-        </style>
-        <title><!--{% block title %}{% endblock %}-->CookSpot</title>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" href="/homepage">CookSpot</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">My Cookgraphy </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Let's cook</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/users">Cooks</a>
-                </li>
-              </ul>
-              
-            </div>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-              <form  class="form-inline" class="text-right">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form>
-              <ul class="navbar-nav" >
-                <li class="nav-item">
-                  <a class="nav-link" href="#">My Profile</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sign Out</a>
-                </li>
-              </ul>
-            </div>
-        </nav>
-
-        <div class="container-fluid ">
-            <div class="row py-2">
-                <div class="col-sm-12 col-md-3 ">
-                    <div class="card" >
-                        <div class="card-header">
-                          M-eats in the next days!
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item"><a href="#meet">BBQ</a> at <a href="#user profile">Katerina's</a> 
-                            <span style="float:right;"> 30/05/2021 </span></li>
-                          <li class="list-group-item"><a href="#meet">Sushi night</a> by <a href="#user profile">Laura</a></li>
-                        </ul>
-                    </div>
-                    <button type="button" id="meetButton" class="btn btn-info" onclick="openForm()">Organize your own meet!</button>
-                    <form id="meetForm" style="visibility: hidden;">
-                        <div class="form-group">
-                          <label for="meetName">Meet name</label>
-                          <input type="text" class="form-control" id="meetName" placeholder="">
-                        </div>
-                        <div class="form-group">
-                          <label for="meetPrivacy">Do you want this meet to be public or private?</label>
-                          <select class="form-control" id="meetPrivacy" >
-                            <option value="" selected disabled hidden>Choose here</option>
-                            <option>Private</option>
-                            <option>Public</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleFormControlSelect2">Choose one of your own recipes to cook</label>
-                          <select multiple class="form-control" id="exampleFormControlSelect2">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                          </select>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                              <input type="date" class="form-control" placeholder="When">
-                            </div>
-                            <div class="col">
-                              <input type="text" class="form-control" placeholder="Where">
-                            </div>
-                          </div>
-                        <div class="form-group">
-                          <label for="exampleFormControlTextarea1">Write something for the invite</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" onclick="meetClose()">Create the meet!</button>
-                      </form>
-                </div>
-                <div class="col-9">
-                  <div class="row">
-                    <div class="col-auto" >
-                        <h4>Recipe of the day!</h4> (randomly selected? could be)
-                        <div class="card" style="width: 25rem;" >
-                            <img class="card-img-top"  src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www" alt="Salad" >
-                            <div class="card-body">
-                              <h5 class="card-title">Greek salad</h5>
-                              <p class="card-text">A very refreshing salad</p>
-                              <a href="#" class="btn btn-primary">Go to the recipe?</a>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-6 alert alert-primary">
-                      3
-                    </div>
-                    <div class="col-6 alert alert-primary">
-                      4
-                    </div>
-                    <div class="col-6 alert alert-primary">
-                      5
-                    </div>
-                  </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 alert alert-primary">
-                  6
-                </div>
-                <div class="col-4 alert alert-primary">
-                  7
-                </div>
-                <div class="col-4 alert alert-primary">
-                  8
-                </div>
-             </div>
-              
+{% extends "index.html" %}
+{% block title %}Cookspot{% endblock %}
+{% block content %}
+<div class="container-fluid ">
+  <div class="row py-2">
+    <div class="col-sm-12 col-md-3 ">
+      <div class="card">
+        <div class="card-header">
+          M-eats in the next days!
         </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="#meet">BBQ</a> at <a href="#user profile">Katerina's</a>
+            <span style="float:right;"> 30/05/2021 </span>
+          </li>
+          <li class="list-group-item"><a href="#meet">Sushi night</a> by <a href="#user profile">Laura</a></li>
+        </ul>
+      </div>
+      <button type="button" id="meetButton" class="btn btn-info" onclick="openForm()">Organize your own meet!</button>
+      <form id="meetForm" style="visibility: hidden;">
+        <div class="form-group">
+          <label for="meetName">Meet name</label>
+          <input type="text" class="form-control" id="meetName" placeholder="">
+        </div>
+        <div class="form-group">
+          <label for="meetPrivacy">Do you want this meet to be public or private?</label>
+          <select class="form-control" id="meetPrivacy">
+            <option value="" selected disabled hidden>Choose here</option>
+            <option>Private</option>
+            <option>Public</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect2">Choose one of your own recipes to cook</label>
+          <select multiple class="form-control" id="exampleFormControlSelect2">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <input type="date" class="form-control" placeholder="When">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Where">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Write something for the invite</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="meetClose()">Create the meet!</button>
+      </form>
+    </div>
+    <div class="col-9">
+      <div class="row">
+        <div class="col-auto">
+          <h4>Recipe of the day!</h4> (randomly selected? could be)
+          <div class="card" style="width: 25rem;">
+            <img class="card-img-top"
+              src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www"
+              alt="Salad">
+            <div class="card-body">
+              <h5 class="card-title">Greek salad</h5>
+              <p class="card-text">A very refreshing salad</p>
+              <a href="#" class="btn btn-primary">Go to the recipe?</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 alert alert-primary">
+          3
+        </div>
+        <div class="col-6 alert alert-primary">
+          4
+        </div>
+        <div class="col-6 alert alert-primary">
+          5
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4 alert alert-primary">
+      6
+    </div>
+    <div class="col-4 alert alert-primary">
+      7
+    </div>
+    <div class="col-4 alert alert-primary">
+      8
+    </div>
+  </div>
 
-        <script>
-            function openForm(){
-                document.getElementById("meetForm").style.visibility= "visible";
-                document.getElementById("meetButton").style.visibility= "hidden";
-            }
-            function meetClose(){
-                document.getElementById("meetForm").style.visibility= "hidden";
-                document.getElementById("meetButton").style.visibility= "visible";
-            }
-        </script>
-        
-</html><!--bis hier loschen-->
+</div>
+
+<script>
+  function openForm() {
+    document.getElementById("meetForm").style.visibility = "visible";
+    document.getElementById("meetButton").style.visibility = "hidden";
+  }
+  function meetClose() {
+    document.getElementById("meetForm").style.visibility = "hidden";
+    document.getElementById("meetButton").style.visibility = "visible";
+  }
+</script>
+{% endblock %}
