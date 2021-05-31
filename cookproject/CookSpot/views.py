@@ -14,3 +14,7 @@ def recipe(response,User_username,Recipe_name):
     if(user != 0):
         if(recipe != 0):
             return render(response, "recipe.html",{'user':user, 'recipe':recipe})
+def login(response):
+    return render(response, "login.html",{})   
+def signup(response):
+    return render(response, "signup.html",{})   
