@@ -2,7 +2,7 @@
 {% block title %} New recipe {% endblock%}
 {% block content %}
 <h3>Add a new recipe to your profile!</h3>
-<form action="#" method="POST">{% csrf_token %}
+<form action="#" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="recipeName">Name</label>
