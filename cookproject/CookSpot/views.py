@@ -18,3 +18,7 @@ def login(response):
     return render(response, "login.html",{})   
 def signup(response):
     return render(response, "signup.html",{})   
+def newrecipe(response, User_username):
+    user = User.objects.get(username=User_username)
+
+    return render(response, "newRecipe.html",{})   
