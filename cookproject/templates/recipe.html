@@ -4,21 +4,31 @@
     <div class="row"> <!-- picture of recipe and details -->
         <div class="col-md-4 cols-12 offset-md-1">
             <h4>{{recipe.name}}</h4>
-            <img src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www" alt="Salad">
+            <h6>{{recipe.description}}</h6>
+            <div class="form-group">
+                {% if recipe.image %}
+                    <img src="{{recipe.image.url}}"></br></br>
+                    <!--img src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www" alt="Salad"-->    
+                {% endif %}
+            </div>
         </div>
         <div class="col-md-4 cols-12 offset-md-1 align-self-center " > 
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Details</h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Tags:</li>
+                        <!--<li class="list-group-item">Tags:</li>
                         <li class="list-group-item">Difficulty:</li>
                         <li class="list-group-item">Preparation time:</li>
-                        <li class="list-group-item">Cooking time:</li>
-                      </ul>
+                        <li class="list-group-item">Cooking time:</li>-->
+                        <li>Tags: {{recipe.tags}}</li>
+                        <li>Difficulty: {{recipe.difficulty}}</li>
+                        <li>Preparation Time: {{recipe.preparationtime}}</li>
+                        <li>Cooking time: {{recipe.cookingtime}}</li>
+                    </ul>
                 </div>
             </div>
-            
+             
         </div>
     </div>
     <div class="row">
