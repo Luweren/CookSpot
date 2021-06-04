@@ -2,38 +2,54 @@
 {% block title %} New recipe {% endblock%}
 {% block content %}
 <h3>Add a new recipe to your profile!</h3>
-<form action="#" method="POST" enctype="multipart/form-data">{% csrf_token %}
+<form action="{% url 'web:newrecipe_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <input name="username" value="{{user.username}}" hidden/>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="recipeName">Name</label>
-      <input type="text" class="form-control" id="recipeName" placeholder="Name">
+      <input required type="text" class="form-control" id="recipeName" placeholder="Name" name="recipename">
     </div>
     <div class="form-group col-md-6">
       <label for="recipeLevel">Level</label>
-      <select id="recipeLevel" class="form-control">
-        <option selected>Choose...</option>
-        <option>Anyone can do it</option>
-        <option>Beginner</option>
-        <option>Intermediate</option>
-        <option>Difficult</option>
-        <option>Professional</option>
+      <select id="recipeLevel" class="form-control" name="difficulty">
+        <option value="none" selected>Choose...</option>
+        <option value="None" >Anyone can do it</option>
+        <option value="Easy" >Beginner</option>
+        <option value="Intermediate" >Intermediate</option>
+        <option value="Difficult" >Difficult</option>
+        <option value="Professional" >Professional</option>
       </select>
     </div>
   </div>
   <div class="form-group">
     <label for="recipeTags">Tags</label>
-    <input type="text" class="form-control" id="recipeTags"
+    <input type="text" class="form-control" id="recipeTags" name="tags"
       placeholder="Enter your tags separated by commas. Example: 'chocolate, birthday cake, frosting' ">
   </div>
   <div class="form-group">
-    <label for="inputAddress2">Description (optional)</label>
-    <input type="text" class="form-control" id="inputAddress2"
+    <label for="inputAddress2">Description (Optional) </label>
+    <input type="text" class="form-control" id="inputAddress2" name="description"
       placeholder="Write something about the dish, history etc.">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress3">Preparation Time</label>
+    <input type="text" class="form-control" id="inputAddress3" name="preparationtime"
+      placeholder="Preparation Time">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress4">Cooking Time</label>
+    <input type="text" class="form-control" id="inputAddress4" name="cookingtime"
+      placeholder="Time Required to Cook">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress5">Image</label>
+    <input type="file" class="form-control" id="inputAddress5" name="image"
+      placeholder="Optional IMG URL">
   </div>
 
   How many ingredients do you need?
   <div class="input-group mb-3">
-    <input type="number" class="form-control" aria-describedby="basic-addon2" id="ingredientsNumber">
+    <input type="number" class="form-control" id="ingredientsNumber">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" onclick="ingredients()">Add the ingredients</button>
     </div>
@@ -50,7 +66,7 @@
   </div>
   <div class="form-group">
     <label for="recipeDirections">Directions</label>
-    <textarea class="form-control" id="recipeDirections" rows="3"></textarea>
+    <textarea class="form-control" name="instructions" id="recipeDirections" rows="3"></textarea>
   </div>
   <button type="submit" class="btn btn-primary">Add</button>
 </form>
@@ -72,25 +88,25 @@
       for(i=0;i<parseInt(val);i++){
         document.getElementById("ingredientsBody").innerHTML += 
         `<td><label for="ingredientAmount"></label>
-          <input type="text" class="form-control" id="ingredientAmount">
+          <input type="text" class="form-control" id="ingredientAmount" name="ingredientamount[]">
         </td>
         <td>
           <label for="ingredientMeasurement"></label>
-          <select id="ingredientMeasurement" class="form-control">
+          <select id="ingredientMeasurement" class="form-control" name="ingredientmeasurement[]">
             <option selected>Choose...</option>
-            <option>g</option>
-            <option>lb</option>
-            <option>oz</option>
-            <option>fl oz</option>
-            <option>c</option>
-            <option>ml</option>
-            <option>tsp</option>
-            <option>Tbsp</option>
+            <option value="g">g</option>
+            <option value="lb">lb</option>
+            <option value="oz">oz</option>
+            <option value="fl">fl oz</option>
+            <option value="c">c</option>
+            <option value="ml">ml</option>
+            <option value="tsp">tsp</option>
+            <option value="Tbsp">Tbsp</option>
 
           </select>
         </td>
         <td><label for="ingredientName"></label>
-          <input type="text" class="form-control" id="ingredientName">
+          <input type="text" class="form-control" id="ingredientName"  name="ingredientname[]">
         </td>`
       }
             

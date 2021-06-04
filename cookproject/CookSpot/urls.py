@@ -1,13 +1,15 @@
 from django.urls import path
 from . import views
 
+
+app_name = 'web'
 urlpatterns=[
     path("users/", views.users, name="users"),
     path("", views.homepage, name="home"),
     path("homepage/", views.homepage, name="home"),
-    path("<str:User_username>/newrecipe/",views.newrecipe, name='newrecipe'),
-    path('<str:User_username>/<str:Recipe_name>/', views.recipe, name='recipe'),
     path("login/",views.login, name='login'),
     path("signup/",views.signup, name='signup'),
-    
+    path("<str:User_username>/newrecipe/",views.newrecipe, name='newrecipe'),
+    path('<str:User_username>/recipe/<str:Recipe_name>/', views.recipe, name='recipe'),
+    path("/newrecipe/post/", views.newrecipe_post, name='newrecipe_post'),
 ]
