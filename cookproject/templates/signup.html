@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-    <title>signup</title>
+    <title>SignUp</title>
   <style>
       .btn1{
         border: none;
@@ -23,7 +23,7 @@
   </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <!--<nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <a class="navbar-brand" href="/homepage">CookSpot</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -43,50 +43,39 @@
           
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+         
           <ul class="navbar-nav" >
           </ul>
         </div>
-      </nav>
-      <section class ="Form my-4 mx-5">
-          <div class="container">
-              <div class="row">
-                  <div class="col-lg-5">
-                      <img src="./" class="img-fluid" alt="">
-                  </div>
-                  <div class="col-lg-7 px-5 pt-5">
-                      
-                      <h4>Sign up for free</h4>
+      </nav> -->
+      
+      <section class ="Form align-self-center">
+        <form action="{% url 'web:signup_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <div class="container align-self-center">
+                <div class="px-5 pt-5 align-self-center">
+                    <h1 class='text-center'> CookSpot </h1>
+                    <h4>Sign up your account</h4>
                     <form>
-                        <div class="form-row">
-                            <div class="col-lg-7">
-                                <input type="email" placeholder="Email-Address" class="form-control my-3 ">
-
-                            </div>
-
+                    <div class="form-row">
+                          <input Required type="Username" name="username" placeholder="Username" class="form-control my-3 ">                          
                         </div>
                         <div class="form-row">
-                            <div class="col-lg-7">
-                                <input type="password" placeholder="password" class="form-control my-3 ">
-                            </div>
-                            <div class="form-row">
-                                <div class="col-lg-7">
-                                    <input type="Repeat password" placeholder="Repeat password" class="form-control my-3 ">
-                                </div>
+                            <input Required type="email"  name="email" placeholder="Email-Address" class="form-control my-3 ">
                         </div>
                         <div class="form-row">
-                            <div class="col-lg-7">
-                              <button type="button" class="btn1" >Sign up</button>
-                            </div>
+                            <input Required type="password"  name="password" placeholder="Password" class="form-control my-3 ">                          
+                        </div>
+                        <div class="form-row">
+                            <input Required type="repeat password" name="rpassword" placeholder="Repeat Password" class="form-control my-3 ">                          
+                        </div>
+                        <div class="form-row">
+                            <button type="submit" class="btn1" >Register</button>
                         </div>
                     </form>
-                  </div>
               </div>
-              
-
           </div>
-
+        </form>
       </section>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
