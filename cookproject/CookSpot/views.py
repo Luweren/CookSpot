@@ -72,3 +72,8 @@ def signup_post(request):
             username=request.POST['username'], email=request.POST['email'], password=request.POST['password'], is_staff=False, is_superuser=False)
         user.save()
         return redirect("/homepage")
+        
+
+def profile(response,User_username):
+    user = User.objects.get(username=User_username)
+    return render(response, "user.html", {'user': user})

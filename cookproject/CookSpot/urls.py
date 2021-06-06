@@ -13,4 +13,5 @@ urlpatterns=[
     path('<str:User_username>/recipe/<str:Recipe_name>/', views.recipe, name='recipe'),
     path("newrecipe/post/", views.newrecipe_post, name='newrecipe_post'),
     path("signup/post/", views.signup_post, name='signup_post'),
+    path("<str:User_username>/myprofile/", views.profile, name="myprofile"),
 ]

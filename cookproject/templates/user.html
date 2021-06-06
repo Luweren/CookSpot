@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% block title %}{{user.username}} | Cookspot profile{% endblock %}
+{% block content %}
+<div class="row py-2">
+    <div class="col-sm-12 col-md-3 ">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Details</h5>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit profile details</button>
+            <ul class="list-group list-group-flush" id="detailsList">
+              <li class="list-group-item">My username: {{user.username}}</li>
+              <li class="list-group-item">My email: {{user.email}}</li>
+            </ul>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>  
+                      <div class="form-group">
+                        <label for="username" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" id="username">
+                      </div>
+                      <div class="form-group">
+                        <label for="email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="email"></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-3 ">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">My recipes</h5>
+              </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><a href="#">Recipe 1</a></li>
+              <li class="list-group-item"><a href="#">{{user.recipename}}</a></li>
+            </ul>
+          </div>
+    </div>
+
+    <div class="col-sm-12 col-md-3 ">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Meets that you have organized</h5>
+              </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><a href="#">Meet 1</a></li>
+            </ul>
+          </div>
+    </div>
+
+{% endblock %}
