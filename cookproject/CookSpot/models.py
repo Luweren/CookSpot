@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 User = settings.AUTH_USER_MODEL
@@ -33,6 +34,6 @@ class Meets(models.Model):
     name = models.CharField(max_length=254)
     date = models.DateField()
     desc = models.TextField()
-
     def __str__(self):
         return self.name
+

@@ -51,9 +51,11 @@
                 <h5 class="card-title">My recipes</h5>
               </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><a href="#">Recipe 1</a></li>
-              <li class="list-group-item"><a href="#">{{user.recipename}}</a></li>
+              {% for recipe in user.recipe_set.all %}
+                <li class="list-group-item"><a href="/{{user.username}}/recipe/{{recipe.name}}">{{recipe.name}}</a></li>
+              {% endfor %}
             </ul>
+            <a href="/{{user.username}}/newrecipe/" class="btn btn-info" role="button">Add New Recipe</a>
           </div>
     </div>
 
