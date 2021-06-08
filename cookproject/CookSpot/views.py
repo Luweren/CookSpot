@@ -77,3 +77,7 @@ def signup_post(request):
 def profile(response,User_username):
     user = User.objects.get(username=User_username)
     return render(response, "user.html", {'user': user})
+
+def meets(request):
+    meets = Meets.objects.filter(user=request.user)
+    return render(request, "meets.html", context={'meets': meets})
