@@ -35,7 +35,6 @@ def signup(response):
 
 def newrecipe(response, User_username):
     user = User.objects.get(username=User_username)
-
     return render(response, "newRecipe.html", {'user': user})
 
 
@@ -81,3 +80,32 @@ def profile(response,User_username):
 def meets(request):
     meets = Meets.objects.filter(user=request.user)
     return render(request, "meets.html", context={'meets': meets})
+
+def meet(response, User_username, Meets_name):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
+    all_users = User.objects.all()
+    if(user != 0 and meet != 0):
+        return render(response, "standaloneMeet.html", {'user': user, 'all_users':all_users, 'meet': meet, 'ingredients':ingredients})
+
+def newmeet(response, User_username):
+    user = User.objects.get(username=User_username)
+    
+    return render(response, "newMeet.html", {'user': user})
+
+def newmeet_post(request):
+    user2 = User.objects.get(username=request.POST['username'])
+    try:
+        user1 = user2
+        meet = Meets
+        try:
+            meet = user1.meets_set.get(name=request.POST['meetName'])
+            return redirect("/"+"homepage") 
+        except (meet.DoesNotExist):
+            Meet = user1.meets_set.create(name=request.POST['meetName'], recipe=request.POST['recipe'], date=request.POST['meetDate'], desc=request.POST['description'])
+            user1.save()
+            return redirect("/"+request.POST['username']+"/meet/"+request.POST['meetName'])
+    except (KeyError, user2.DoesNotExist):
+        # placeholder redirect
+        return redirect("/"+"homepage")

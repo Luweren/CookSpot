@@ -15,4 +15,7 @@ urlpatterns=[
     path("signup/post/", views.signup_post, name='signup_post'),
     path("<str:User_username>/myprofile/", views.profile, name="myprofile"),
     path("meets/", views.meets, name="meets"),
+    path('<str:User_username>/meet/<str:Meets_name>/', views.meet, name='meet'),
+    path('<str:User_username>/newmeet/', views.newmeet, name='newmeet'),
+    path('newmeet/post', views.newmeet_post, name='newmeet_post'),
 ]
