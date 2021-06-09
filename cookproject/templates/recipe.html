@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row"> <!-- picture of recipe and details -->
         <div class="col-md-4 cols-12 offset-md-1">
-            <h4>{{recipe.name}} - {{user.username}}</h4>
+            <h4>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h4>
             <h6>{{recipe.description}}</h6>
             <div class="form-group">
                 {% if recipe.image %}
