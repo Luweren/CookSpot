@@ -77,7 +77,15 @@ def signup_post(request):
 def profile(response,User_username):
     user = User.objects.get(username=User_username)
     return render(response, "user.html", {'user': user})
-
 def meets(request):
     meets = Meets.objects.filter(user=request.user)
     return render(request, "meets.html", context={'meets': meets})
+
+def meet(response, User_username, Meets_name):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
+    all_users = User.objects.all()
+    if(user != 0 and meet != 0):
+        return render(response, "standaloneMeet.html", {'user': user, 'all_users':all_users, 'meet': meet, 'ingredients':ingredients})
+

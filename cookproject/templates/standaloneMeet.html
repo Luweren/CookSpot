@@ -1,0 +1,66 @@
+{% extends "index.html" %}
+{% block title %} {{meet.name}} {% endblock%}
+{% block content %}
+    <div class="row"> <!-- picture of recipe and details -->
+        <div class="col-md-4 cols-12 offset-md-1">
+            <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
+            <h5>What are we making? <a href="{% url 'web:recipe' meet.user meet.recipe%}">{{meet.recipe}}</a> </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 cols-12 offset-md-1">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Meet Description</h5>
+                    <ul class="list-group list-group-flush">
+                        <li>{{meet.desc}}</li>
+                        <li>Who's bringing what?
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Person</th>
+                                    <th scope="col">Ingredient</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for ingredient in ingredients %}
+                                    <tr></tr><td><div class="dropdown">
+                                        <button onclick="clicked(this)" style="background-color: darksalmon;" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Choose User // still need to fix the JS Code
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          {% for user in all_users %} 
+                                            <a class="dropdown-item" href="#">{{user}}</a>
+                                          {% endfor %}
+                                        </div>
+                                      </div></td>
+                                      <td>{{ingredient}}</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                              </table>
+
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 cols-12 offset-md-1 " > 
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li>Date: {{meet.date}}</li>
+                        <li>Where? Todo Add this in the form!</li>
+                    </ul>
+                </div>
+            </div>
+             
+        </div>
+    </div>
+    <script>
+        function clicked(obj) {
+        //    document.getElementById("dropdownMenuButton").innerHTML = obj;
+        }
+    </script>
+{% endblock %}
