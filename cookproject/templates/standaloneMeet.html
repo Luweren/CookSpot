@@ -24,16 +24,15 @@
                                 </thead>
                                 <tbody>
                                     {% for ingredient in ingredients %}
-                                    <tr></tr><td><div class="dropdown">
-                                        <button onclick="clicked(this)" style="background-color: darksalmon;" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          Choose User // still need to fix the JS Code
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          {% for user in all_users %} 
-                                            <a class="dropdown-item" href="#">{{user}}</a>
-                                          {% endfor %}
-                                        </div>
-                                      </div></td>
+                                    <tr></tr><td>
+                                          <label for="chooseUser"></label>
+                                            <select id="chooseUser" class="form-control" name="chooseUser">
+                                                <option selected>Choose a user</option>
+                                                {% for user in all_users %} 
+                                                <option value="{{user}}">{{user}}</option>
+                                                {% endfor %}
+                                            </select>
+                                      </td>
                                       <td>{{ingredient}}</td></tr>
                                     {% endfor %}
                                 </tbody>
