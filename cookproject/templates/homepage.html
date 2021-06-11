@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container-fluid ">
   <div class="row py-2">
-    <div class="col-sm-12 col-md-3 ">
+    <div class="col-sm-12 col-md-4 ">
       <div class="card">
         <div class="card-header">
           M-eats in the next days!
@@ -15,7 +15,7 @@
           <li class="list-group-item"><a href="#meet">Sushi night</a> by <a href="#user profile">Laura</a></li>
         </ul>
       </div>
-      <button type="button" id="meetButton" class="btn btn-info" onclick="openForm()">Organize your own meet!</button>
+      <button type="button" id="meetButton" class="btn btn-info" href="">Organize your own meet!</button>
       <form id="meetForm" style="visibility: hidden;">
         <div class="form-group">
           <label for="meetName">Meet name</label>
@@ -54,7 +54,7 @@
         <button type="submit" class="btn btn-primary" onclick="meetClose()">Create the meet!</button>
       </form>
     </div>
-    <div class="col-9">
+    <div class="col-6 offset-md-2">
       <div class="row">
         <div class="col-auto">
           <h4>Recipe of the day!</h4> (randomly selected? could be)
