@@ -103,7 +103,8 @@ def newmeet_post(request):
             meet = user1.meets_set.get(name=request.POST['meetName'])
             return redirect("/"+"homepage") 
         except (meet.DoesNotExist):
-            Meet = user1.meets_set.create(name=request.POST['meetName'], recipe=request.POST['recipe'], date=request.POST['meetDate'], desc=request.POST['description'])
+            thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
+            Meet = user1.meets_set.create(name=request.POST['meetName'], recipe=thisrecipe, date=request.POST['meetDate'], desc=request.POST['description'])
             user1.save()
             return redirect("/"+request.POST['username']+"/meet/"+request.POST['meetName'])
     except (KeyError, user2.DoesNotExist):

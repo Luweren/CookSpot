@@ -64,9 +64,9 @@
             <div class="card-body">
                 <h5 class="card-title">Meets that you have organized</h5>
               </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><a href="#">Meet 1</a></li>
-            </ul>
+            {% for meet in user.meets_set.all %}
+                <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
+              {% endfor %}
             <a href="/{{user.username}}/newmeet/" class="btn btn-info" role="button">Create a new meet</a>
           </div>
     </div>
