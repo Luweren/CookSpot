@@ -2,53 +2,24 @@
 {% block title %}Users{% endblock %}
 {% block content %}
 <div class="container-fluid">
-  <div class="row">
-    <div class="cols-12" style="text-align: center;">
-      <h1>My friends</h1>
+  <div class="row" >
+    <div class="cols-12 align-self-center" style="text-align: center;">
+      <h1>Our Users</h1>
     </div>
-    JK i dont have that many
   </div>
+  {% for user in users %}
   <div class="row row-cols-1 row-cols-md-3 g-4 m-3">
     <div class="col">
       <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title"><a href="#user">User1</a></h5>
+          <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a></h5>
           <p class="card-text">Click this and go the user's page.</p>
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="card">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><a href="#user">User2</a></h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-            content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><a href="#user">User3</a></h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-            content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><a href="#user">User4</a></h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-            content. This content is a little bit longer.</p>
-        </div>
-      </div>
-    </div>
   </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

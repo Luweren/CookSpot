@@ -15,7 +15,8 @@ def homepage(response):
 
 
 def users(response):
-    return render(response, "users.html", {})
+    users = User.objects.all()
+    return render(response, "users.html", {'users': users})
 
 
 def recipe(response, User_username, Recipe_name):
