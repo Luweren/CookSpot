@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -14,11 +15,13 @@ def homepage(response):
     return render(response, "homepage.html", {})
 
 
+@login_required()
 def users(response):
     users = User.objects.all()
     return render(response, "users.html", {'users': users})
 
 
+@login_required()
 def recipe(response, User_username, Recipe_name):
     user = User.objects.get(username=User_username)
     recipe = user.recipe_set.get(name=Recipe_name)
@@ -34,11 +37,13 @@ def signup(response):
     return render(response, "signup.html", {})
 
 
+@login_required()
 def newrecipe(response, User_username):
     user = User.objects.get(username=User_username)
     return render(response, "newRecipe.html", {'user': user})
 
 
+@login_required()
 def newrecipe_post(request):
     user2 = User.objects.get(username=request.POST['username'])
     try:
@@ -74,14 +79,17 @@ def signup_post(request):
         return redirect("/homepage")
         
 
+@login_required()
 def profile(response,User_username):
     user = User.objects.get(username=User_username)
     return render(response, "user.html", {'user': user})
 
+@login_required()
 def meets(request):
     meets = Meets.objects.filter(user=request.user)
     return render(request, "meets.html", context={'meets': meets})
 
+@login_required()
 def meet(response, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
@@ -90,11 +98,13 @@ def meet(response, User_username, Meets_name):
     if(user != 0 and meet != 0):
         return render(response, "standaloneMeet.html", {'user': user, 'all_users':all_users, 'meet': meet, 'ingredients':ingredients})
 
+@login_required()
 def newmeet(response, User_username):
     user = User.objects.get(username=User_username)
     
     return render(response, "newMeet.html", {'user': user})
 
+@login_required()
 def newmeet_post(request):
     user2 = User.objects.get(username=request.POST['username'])
     try:

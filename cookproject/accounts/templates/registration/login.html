@@ -53,7 +53,8 @@
                 <div class="px-5 pt-5 align-self-center">
                     <h1 class='text-center'> CookSpot </h1>
                     <h4>Sign into your account</h4>
-                    <form>
+                    <form action="{% url 'login'%}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-row">
                             <input Required type="email" placeholder="Email-Address" class="form-control my-3 ">
                         </div>
@@ -61,7 +62,7 @@
                             <input Required type="password" placeholder="Password" class="form-control my-3 ">                          
                         </div>
                         <div class="form-row">
-                            <button type="button" class="btn1" >Login</button>
+                            <button type="submit" value="Login" class="btn1" >Login</button>
                         </div>
                         <a href="#">Forget password</a>
                         <p>Don't have an account? <a href="/signup">Register here</a></p>
