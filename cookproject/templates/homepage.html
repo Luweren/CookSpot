@@ -6,13 +6,20 @@
     <div class="col-sm-12 col-md-4 ">
       <div class="card">
         <div class="card-header">
-          M-eats in the next days!
+          M-eats in the next 5 days!
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="#meet">BBQ</a> at <a href="#user profile">Katerina's</a>
-            <span style="float:right;"> 30/05/2021 </span>
-          </li>
-          <li class="list-group-item"><a href="#meet">Sushi night</a> by <a href="#user profile">Laura</a></li>
+          {% for meet in meets %}
+            {% if user.is_authenticated %}
+              <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> at <a href="/{{meet.user}}/myprofile">{{meet.user}}'s</a>
+                <span style="float:right;"> {{meet.date}} </span>
+              </li>
+            {% else %}
+              <li class="list-group-item"><a href="/accounts/login">{{meet.name}}</a> at <a href="/accounts/login">{{meet.user}}'s</a>
+                <span style="float:right;"> {{meet.date}} </span>
+              </li>
+            {% endif %}
+          {% endfor %}
         </ul>
       </div>
       <a id="meetButton" class="btn btn-info" href="/{{user.username}}/newmeet">Organize your own meet!</a></p>
@@ -57,18 +64,6 @@
     <div class="col-6 offset-md-2">
       <div class="row">
         <div class="col-auto">
-          <!--<h4>Recipe of the day!</h4> (randomly selected? could be)
-          <div class="card" style="width: 25rem;">
-            <img class="card-img-top"
-              src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www"
-              alt="Salad">
-            <div class="card-body">
-              <h5 class="card-title">Greek salad</h5>
-              <p class="card-text">A very refreshing salad</p>
-              <a href="#" class="btn btn-primary">Go to the recipe?</a>
-            </div>
-          </div>
-          -->
           <h4>Featured User Recipe</h4>
           <div class="card" style="width: 25rem;">
             <img class="card-img-top"

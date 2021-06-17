@@ -7,15 +7,22 @@ from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
 import numpy.random as rand
+import datetime
 from .models import Recipe, Ingredients, Meets
 # Create your views here.
 
 User = get_user_model()
-
+today = datetime.date.today()
 
 def homepage(response):
     recipe = Recipe.objects.all()[rand.randint(0,len(Recipe.objects.all()))]
-    return render(response, "homepage.html", {'recipe': recipe})
+    meets = []
+    for x in range(0, 5):
+      day = (today + datetime.timedelta(days=x))
+      for meet in Meets.objects.all():
+        if meet.date == day:
+          meets.append(meet)
+    return render(response, "homepage.html", {'recipe': recipe,'meets': meets})
 
 
 @login_required()
