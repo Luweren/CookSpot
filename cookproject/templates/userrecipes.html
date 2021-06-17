@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block title %}My Recipes{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row" >
+    <div class="cols-12 align-self-center" style="text-align: center;">
+      <h1>My Cookgraphy</h1>
+    </div>
+  </div>
+  {% for recipe in user.recipe_set.all %}
+  <div class="row-cols-5 row-cols-md-3 g-4 m-3">
+    <div class="col">
+      <div class="card">
+        <img src="{{recipe.image}}" width="100" height="100" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><a href="/{{user.username}}/recipe/{{recipe.name}}">{{recipe.name}}</a></h5>
+          <p class="card-text">{{recipe.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

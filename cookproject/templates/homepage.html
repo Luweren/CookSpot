@@ -15,7 +15,7 @@
           <li class="list-group-item"><a href="#meet">Sushi night</a> by <a href="#user profile">Laura</a></li>
         </ul>
       </div>
-      <button type="button" id="meetButton" class="btn btn-info" href="">Organize your own meet!</button>
+      <a id="meetButton" class="btn btn-info" href="/{{user.username}}/newmeet">Organize your own meet!</a></p>
       <form id="meetForm" style="visibility: hidden;">
         <div class="form-group">
           <label for="meetName">Meet name</label>
@@ -57,7 +57,7 @@
     <div class="col-6 offset-md-2">
       <div class="row">
         <div class="col-auto">
-          <h4>Recipe of the day!</h4> (randomly selected? could be)
+          <!--<h4>Recipe of the day!</h4> (randomly selected? could be)
           <div class="card" style="width: 25rem;">
             <img class="card-img-top"
               src="https://m.eirinika.gr/sites/default/files/styles/article_landscape/public/article/2017-07/salata_0.jpg?itok=btvK0Www"
@@ -66,6 +66,27 @@
               <h5 class="card-title">Greek salad</h5>
               <p class="card-text">A very refreshing salad</p>
               <a href="#" class="btn btn-primary">Go to the recipe?</a>
+            </div>
+          </div>
+          -->
+          <h4>Featured User Recipe</h4>
+          <div class="card" style="width: 25rem;">
+            <img class="card-img-top"
+              {% if recipe.image != ""%}
+              src="{{recipe.image}}"
+              {% else %}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+              {% endif %}
+              height="300"
+            >
+            <div class="card-body">
+              <h5 class="card-title">{{recipe.name}}  by <a href="{% url 'web:myprofile' recipe.user %}">{{recipe.user}}</a></h5>
+              <p class="card-text">{{recipe.description}}</p>
+              {% if user.is_authenticated %}
+              <a href="/{{user.username}}/recipe/{{recipe.name}}" class="btn btn-primary">Go to the recipe?</a>
+              {% else %}
+              <a href="/accounts/login" class="btn btn-primary">Go to the recipe?</a>
+              {% endif %}
             </div>
           </div>
         </div>

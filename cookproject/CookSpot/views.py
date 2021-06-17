@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
+import numpy.random as rand
 from .models import Recipe, Ingredients, Meets
 # Create your views here.
 
@@ -13,13 +14,24 @@ User = get_user_model()
 
 
 def homepage(response):
-    return render(response, "homepage.html", {})
+    recipe = Recipe.objects.all()[rand.randint(0,len(Recipe.objects.all()))]
+    return render(response, "homepage.html", {'recipe': recipe})
 
 
 @login_required()
 def users(response):
     users = User.objects.all()
     return render(response, "users.html", {'users': users})
+
+@login_required()
+def myrecipes(response,  User_username):
+    user = User.objects.get(username=User_username)
+    return render(response, "userrecipes.html", {'user': user})
+
+@login_required()
+def allrecipes(response):
+    recipes = Recipe.objects.all()
+    return render(response, "all_recipes.html", {'recipes': recipes})
 
 
 @login_required()

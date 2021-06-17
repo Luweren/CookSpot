@@ -5,6 +5,7 @@ from . import views
 app_name = 'web'
 urlpatterns=[
     path("users/", views.users, name="users"),
+    path("allrecipes/", views.allrecipes, name="allrecipes"),
     path("", views.homepage, name="home"),
     path("homepage/", views.homepage, name="home"),
     path("accounts/login/",views.login, name='login'),
@@ -18,5 +19,6 @@ urlpatterns=[
     path("meets/", views.meets, name="meets"),
     path('<str:User_username>/meet/<str:Meets_name>/', views.meet, name='meet'),
     path('<str:User_username>/newmeet/', views.newmeet, name='newmeet'),
+    path('<str:User_username>/mycookgraphy/', views.myrecipes, name='mycookgraphy'),
     path('newmeet/post', views.newmeet_post, name='newmeet_post'),
 ]
