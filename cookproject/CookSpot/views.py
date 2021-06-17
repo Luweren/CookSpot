@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -30,7 +31,23 @@ def recipe(response, User_username, Recipe_name):
 
 
 def login(response):
-    return render(response, "login.html", {})
+    return render(response, "homepage.html", {})
+
+"""def login_post(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+            return redirect("/"+"homepage")
+        else:
+            # Redirect to login page
+            return redirect("/"+"login")
+    else:
+        # Redirect to login page
+        return redirect("/"+"login")"""
 
 
 def signup(response):
