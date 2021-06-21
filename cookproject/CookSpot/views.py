@@ -157,3 +157,10 @@ def newmeet_post(request):
     except (KeyError, user2.DoesNotExist):
         # placeholder redirect
         return redirect("/"+"homepage")
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        recipes = Recipe.objects.filter(tags__contains = searched)
+        return render(request, "search.html", {'searched':searched, 'recipes':recipes})
+    return render(request, "search.html", {})

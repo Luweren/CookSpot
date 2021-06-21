@@ -7,26 +7,24 @@
       <h1>Our Recipes</h1>
     </div>
   </div>
-  {% for recipe in recipes %}
-  <div class="row row-cols-1 row-cols-md-3 g-4 m-3">
-    <div class="col">
-      <div class="card">
-        <img class="card-img-top" 
-        {% if recipe.image != ""%}
-        src="{{recipe.image}}"
-        {% else %}
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
-        {% endif %}
-        height="300"
-        alt="...">
-        <div class="card-body">
-          <h5 class="card-title"><a href="/{{recipe.user}}/recipe">{{recipe.name}}</a> by <a href="/{{recipe.user}}/myprofile">{{recipe.user}}</a></h5>
-          <p class="card-text">{{recipe.description}}.</p>
-        </div>
-      </div>
-    </div>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+    {% for recipe in recipes %}
+            <div class="card" style="width: 18rem; margin: 10px">
+              <img class="card-img-top" 
+              {% if recipe.image != ""%}
+              src="{{recipe.image}}"
+              {% else %}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+              {% endif %}
+              height="300"
+              alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/{{recipe.user}}/recipe/{{recipe.name}}">{{recipe.name}}</a> by <a href="/{{recipe.user}}/myprofile">{{recipe.user}}</a></h5>
+                        <p class="card-text">{{recipe.description}}.</p>
+                    </div>
+            </div>
+        {% endfor %}
   </div>
-  {% endfor %}
 </div>
 
 {% endblock %}

@@ -21,4 +21,5 @@ urlpatterns=[
     path('<str:User_username>/newmeet/', views.newmeet, name='newmeet'),
     path('<str:User_username>/mycookgraphy/', views.myrecipes, name='mycookgraphy'),
     path('newmeet/post', views.newmeet_post, name='newmeet_post'),
+    path('search/', views.search, name="search-things")
 ]

@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if searched %}
+<h1>U searched for {{ searched }} </h1> Here are the recipes that contain {{ searched }} in their tags!<br/>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap">
+    {% for recipe in recipes %}
+            <div class="card" style="width: 18rem; margin: 10px">
+                <img src="{{ recipe.image }}" class="card-img-top" >
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/{{recipe.user}}/recipe/{{recipe.name}}">{{recipe.name}}</a> by <a href="/{{recipe.user}}/myprofile">{{recipe.user}}</a></h5>
+                        <p class="card-text">{{recipe.description}}.</p>
+                    </div>
+            </div>
+        {% endfor %}
+</div>
+    
+    {% if recipes|length == 0 %}
+        <h1> Sorry, no recipes have the tag {{searched}}</h1>
+    {% endif %}
+{% else %} 
+    <h1> duuuude pls search something!</h1>
+{% endif %}
+{% endblock %}
