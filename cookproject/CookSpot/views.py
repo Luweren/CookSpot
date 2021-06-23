@@ -158,9 +158,30 @@ def newmeet_post(request):
         # placeholder redirect
         return redirect("/"+"homepage")
 
+# @login_required() ?
 def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
         recipes = Recipe.objects.filter(tags__contains = searched)
         return render(request, "search.html", {'searched':searched, 'recipes':recipes})
     return render(request, "search.html", {})
+
+@login_required()
+def editUserDetails(request):
+    user = request.user
+    if request.method == "POST":
+        if (request.POST['username']):
+            user.username = request.POST['username']
+        if (request.POST['firstName']):
+            user.first_name = request.POST['firstName']
+        if (request.POST['lastName']):
+            user.last_name = request.POST['lastName']
+        if (request.POST['email']):
+            user.email = request.POST['email']
+        if (request.POST['bio']):
+            user.bio = request.POST['bio']
+        if(request.POST['image']):
+            user.image = request.POST['image']
+        user.save()
+        return render(request, "user.html", {'user': user})
+    return render(request, "user.html", {'user': user})
