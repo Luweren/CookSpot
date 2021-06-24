@@ -2,13 +2,13 @@ from django.db import models
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
 import numpy.random as rand
 import datetime
-from .models import Recipe, Ingredients, Meets
+from .models import Recipe, Ingredients, Meets, Profile
 # Create your views here.
 
 User = get_user_model()
@@ -116,9 +116,9 @@ def signup_post(request):
         
 
 @login_required()
-def profile(response,User_username):
+def profile(request,User_username):
     user = User.objects.get(username=User_username)
-    return render(response, "user.html", {'user': user})
+    return render(request, "user.html", {'user': user})
 
 @login_required()
 def meets(request):
@@ -169,6 +169,7 @@ def search(request):
 @login_required()
 def editUserDetails(request):
     user = request.user
+    #user.refresh_from_db()
     if request.method == "POST":
         if (request.POST['username']):
             user.username = request.POST['username']
@@ -179,9 +180,9 @@ def editUserDetails(request):
         if (request.POST['email']):
             user.email = request.POST['email']
         if (request.POST['bio']):
-            user.bio = request.POST['bio']
+            user.profile.bio = request.POST['bio']
         if(request.POST['image']):
-            user.image = request.POST['image']
+            user.profile.profile_photo = request.POST['image']
         user.save()
         return render(request, "user.html", {'user': user})
     return render(request, "user.html", {'user': user})

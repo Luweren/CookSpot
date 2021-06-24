@@ -1,20 +1,44 @@
 {% extends "index.html" %}
+{% block css %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');  
+  h3 {font-family: 'Open Sans Condensed', sans-serif;}
+  img {
+    border-radius: 70%;
+    width: 150px;
+  }
+  @media (max-width: 767px) {
+    img { 
+      display: inline-block;
+    }
+
+  }
+  @media (min-width: 768px){
+    img {
+    float: right;
+    }
+  }
+  
+</style>
+{% endblock %}
+
 {% block title %}{{user.username}} | Cookspot profile{% endblock %}
 {% block content %}
-<div class="row py-2">
-  <div class="col-sm-12 col-md-5">
-    {% if user.image %}
-      <img src="{{user.image}}" >
+<div class="row p-2">
+  <div class="col-sm-5 col-md-5 ">
+    {% if user.profile.profile_photo %}
+      <img src="{{user.profile.profile_photo}}" >
+    {% else %}
+      here goes image
     {% endif %}
-    here goes image
   </div>
-  <div class="col-sm-12 col-md-7">
+  <div class="col-sm-7 col-md-7 align-self-center">
     <h3>|{{user.first_name}} {{user.last_name}}</h3>
   </div>
   
 </div>
 <div class="row py-2">
-    <div class="col-sm-12 col-md-3 ">
+    <div class="col-sm-12 col-md-4 ">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Details</h5>
@@ -23,7 +47,7 @@
             <ul class="list-group list-group-flush" id="detailsList">
               <li class="list-group-item">My username: {{user.username}}</li>
               <li class="list-group-item">My email: {{user.email}}</li>
-              <li class="list-group-item">About me: {{user.bio}}</li>
+              <li class="list-group-item">About me: {{user.profile.bio}}</li>
             </ul>
             
             <!-- Modal -->
@@ -72,7 +96,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12 col-md-3 ">
+    <div class="col-sm-12 col-md-4 ">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">My recipes</h5>
@@ -86,7 +110,7 @@
           </div>
     </div>
 
-    <div class="col-sm-12 col-md-3 ">
+    <div class="col-sm-12 col-md-4 ">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Meets that you have organized</h5>
