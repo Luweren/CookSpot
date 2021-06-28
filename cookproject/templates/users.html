@@ -3,19 +3,25 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row" >
-    <div class="cols-12 align-self-center" style="text-align: center;">
+    <div class="cols-12 col-md-6 align-self-center" >
       <h1>Our Users</h1>
+    </div>
+    <div class="col-md-6">
+      <form  class="form-inline" class="text-right" method="POST" name="userForm" action="{% url 'web:users' %}">{% csrf_token %} 
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for someone" aria-label="Search" name="searched">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" onclick="document.userForm.submit()" >Search</button>
+      </form>
     </div>
   </div>
   <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for user in users %}
-            <div class="card" style="width: 18rem; margin: 10px">
-              <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a></h5>
-                      <p class="card-text">Click this and go the user's page.</p>
-                    </div>
-            </div>
+        <div class="card" style="width: 18rem; margin: 10px">
+          <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a></h5>
+                  <p class="card-text">Click this and go the user's page.</p>
+              </div>
+        </div>
         {% endfor %}
   </div>
   

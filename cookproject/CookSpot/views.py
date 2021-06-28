@@ -26,9 +26,15 @@ def homepage(response):
 
 
 @login_required()
-def users(response):
+def users(request):
     users = User.objects.all()
-    return render(response, "users.html", {'users': users})
+    if request.method == "POST":
+        searched = request.POST['searched']
+        searchedUsers = User.objects.filter(username__contains = searched)
+        return render(request, "users.html", {'searched':searched, 'users':searchedUsers})
+    #return render(request, "users.html", {})
+
+    return render(request, "users.html", {'users': users})
 
 @login_required()
 def myrecipes(response,  User_username):
@@ -165,6 +171,7 @@ def search(request):
         recipes = Recipe.objects.filter(tags__contains = searched)
         return render(request, "search.html", {'searched':searched, 'recipes':recipes})
     return render(request, "search.html", {})
+
 
 @login_required()
 def editUserDetails(request):
