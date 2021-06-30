@@ -1,12 +1,24 @@
 {% extends "index.html" %}
 {% block title %}{{user.username}} | Cookspot profile{% endblock %}
 {% block content %}
-    <div class="row">
+<div class="container-fluid">
+  <div class="row" >
+    <div class="cols-12 col-md-6 align-self-center" >
+      <h1>Our M-eats</h1>
+    </div>
+    <div class="col-md-6">
+      <form  class="form-inline" class="text-right" method="POST" name="meets" action="{% url 'web:meets' %}">{% csrf_token %} 
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for m-eats" aria-label="Search" name="searched">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" onclick="document.meets.submit()" >Search</button>
+      </form>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for i in meets %}
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ i.name }}</h5>
+                <h5 class="card-title">{{i.name}}</h5>
               </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><a href="#">Meet 1</a></li>

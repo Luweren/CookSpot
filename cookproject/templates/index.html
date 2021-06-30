@@ -44,6 +44,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/allrecipes">Recipes</a>
                 </li>
+                {% if user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/meets">M-eats</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/accounts/login">M-eats </a>
+                  </li>
+                {% endif %}
               </ul>
               
             </div>
