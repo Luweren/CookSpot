@@ -18,7 +18,7 @@
         <div class="card" style="width: 18rem; margin: 10px">
           <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
               <div class="card-body">
-                  <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a></h5>
+                  <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a> R={{user.profile.get_av_rating}}</h5>
                   <p class="card-text">Click this and go the user's page.</p>
               </div>
         </div>

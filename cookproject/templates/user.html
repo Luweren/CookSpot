@@ -48,6 +48,7 @@
               <li class="list-group-item">My username: {{user.username}}</li>
               <li class="list-group-item">My email: {{user.email}}</li>
               <li class="list-group-item">About me: {{user.profile.bio}}</li>
+              <li class="list-group-item">Average Rating: {{user.profile.get_av_rating}}</li>
             </ul>
             
             <!-- Modal -->
@@ -119,6 +120,17 @@
                 <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
               {% endfor %}
             <a href="/{{user.username}}/newmeet/" class="btn btn-info" role="button">Create a new meet</a>
+          </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 ">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Meets that you have participated in.</h5>
+              </div>
+            {% for meet in user.participants.all %}
+                <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a></li>
+              {% endfor %}
           </div>
     </div>
 

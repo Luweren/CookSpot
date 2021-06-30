@@ -1,7 +1,10 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.db.models.constraints import UniqueConstraint
+from django.db.models.fields.related import ManyToManyField
 from django.dispatch import receiver
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.signals import post_save
 # Create your models here.
 
@@ -12,7 +15,18 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     profile_photo = models.URLField()
-    
+
+    def get_av_rating(self):
+        averagescore = 0
+        for rating in (self.user.gottenratings.all()):
+            averagescore += rating.rating
+        try: 
+            averagescore /= len(self.user.gottenratings.all())
+            averagescore = round(averagescore,2)
+        except(ZeroDivisionError):
+            averagescore = "No Ratings"
+        return averagescore
+
     def __str__(self):  
         return self.user.username
 
@@ -50,9 +64,26 @@ class Ingredients(models.Model):
 class Meets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    maximumparticipants = models.IntegerField(blank=True, null=True)
+    participants = ManyToManyField(User, related_name="participants", blank=True)
     name = models.CharField(max_length=254)
     date = models.DateField()
     desc = models.TextField()
+    def participating(self):
+        return len(self.participants.all())
     def __str__(self):
         return self.name
+
+class UserRating(models.Model):
+    fromuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='givenratings')
+    touser =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='gottenratings')
+    meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.PROTECT)
+    rating = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])
+    def __str__(self):
+        return str(self.rating) + " by " + str(self.fromuser) + " for " + str(self.touser)
+    class META:
+        constraints = [
+        models.UniqueConstraint(fields=["fromuser", "touser", "meet"], name="1 Rating per Meet")
+    ]
+
 

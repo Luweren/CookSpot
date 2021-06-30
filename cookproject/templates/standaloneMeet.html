@@ -5,6 +5,24 @@
         <div class="col-md-4 cols-12 offset-md-1">
             <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
             <h5>What are we making? <a href="{% url 'web:recipe' meet.user meet.recipe%}">{{meet.recipe}}</a> </h5>
+            <h5>Participants: {{meet.participating}} /{{meet.maximumparticipants}}</h5>
+            {% for participant in meet.participants.all %}
+            {% if participant != request.user%}
+            <h5><a href="/{{participant.username}}/myprofile">{{participant.username}}</a> -
+                {% if request.user in meet.participants.all%}
+                <a href="rate/{{participant.username}}" class="btn btn-info" role="button">Rate for this M-eat</a>
+                {% endif %}
+            </h5>
+            {% endif %}
+            {% endfor %}
+            {% if request.user not in meet.participants.all and meet.participating < meet.maximumparticipants%}
+            <div class="input-group-append">
+                <a href="join" class="btn btn-info" role="button">Join M-eat</a>
+            </div>
+            {% endif %}
+            {% if not meet.participating < meet.maximumparticipants %}
+            <h5> FULL </h5>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -28,12 +46,12 @@
                                           <label for="chooseUser"></label>
                                             <select id="chooseUser" class="form-control" name="chooseUser">
                                                 <option selected>Choose a user</option>
-                                                {% for user in all_users %} 
+                                                {% for user in meet.participants.all %} 
                                                 <option value="{{user}}">{{user}}</option>
                                                 {% endfor %}
                                             </select>
                                       </td>
-                                      <td>{{ingredient}}</td></tr>
+                                      <td> {{ingredient}} {{ingredient.amount}} </td></tr>
                                     {% endfor %}
                                 </tbody>
                               </table>
