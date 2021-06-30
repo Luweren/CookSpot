@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
 import numpy.random as rand
 import datetime
-from .models import Recipe, Ingredients, Meets, Profile
+from .models import Recipe, Ingredients, Meets, Profile, UserRating
 # Create your views here.
 
 User = get_user_model()
@@ -124,7 +124,8 @@ def signup_post(request):
 @login_required()
 def profile(request,User_username):
     user = User.objects.get(username=User_username)
-    return render(request, "user.html", {'user': user})
+    loggedin = request.user
+    return render(request, "user.html", {'user': user, 'loggedin':loggedin})
 
 @login_required()
 def meets(request):
@@ -139,13 +140,53 @@ def meets(request):
 
 
 @login_required()
-def meet(response, User_username, Meets_name):
+def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
     ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
     all_users = User.objects.all()
     if(user != 0 and meet != 0):
-        return render(response, "standaloneMeet.html", {'user': user, 'all_users':all_users, 'meet': meet, 'ingredients':ingredients})
+        return render(request, "standaloneMeet.html", {'user': user, 'all_users':all_users, 'meet': meet, 'ingredients':ingredients})
+
+@login_required()
+def meetjoin(request, User_username, Meets_name):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    meet.participants.add(request.user)
+    return redirect("/"+User_username+"/meet/"+Meets_name+"/")
+
+
+@login_required()
+def meetrate(request, User_username, Meets_name, Target_username):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    target = User.objects.get(username=Target_username)
+    try:
+        rating = user.givenratings.get(fromuser=user,touser=target,meet=meet)
+        return render(request, "editrate.html", {'user': user, 'target': target, 'meet': meet, 'rating': rating})
+
+    except(UserRating.DoesNotExist):
+        return render(request, "rate.html", {'user': user, 'target': target, 'meet': meet})
+
+
+@login_required()
+def meetrate_post(request):
+    user = User.objects.get(username=request.POST['cuser'])
+    target = User.objects.get(username=request.POST['target'])
+    meet = Meets.objects.get(name=request.POST['meet'])
+    user.givenratings.create(fromuser=user,touser=target, meet=meet, rating=request.POST['rating'])
+    user.save()
+    return redirect("/"+meet.user.username +"/meet/"+meet.name+"/")
+
+def editrate_post(request):
+    user = User.objects.get(username=request.POST['cuser'])
+    target = User.objects.get(username=request.POST['target'])
+    meet = Meets.objects.get(name=request.POST['meet'])
+    rating = user.givenratings.get(fromuser=user,touser=target,meet=meet)
+    rating.rating=request.POST['rating']
+    rating.save()
+    return redirect("/"+meet.user.username +"/meet/"+meet.name+"/")
+
 
 @login_required()
 def newmeet(response, User_username):
@@ -164,7 +205,8 @@ def newmeet_post(request):
             return redirect("/"+"homepage") 
         except (meet.DoesNotExist):
             thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
-            Meet = user1.meets_set.create(name=request.POST['meetName'], recipe=thisrecipe, date=request.POST['meetDate'], desc=request.POST['description'])
+            Meet = user1.meets_set.create(name=request.POST['meetName'], maximumparticipants=request.POST['pnumber'], recipe=thisrecipe, date=request.POST['meetDate'], desc=request.POST['description'])
+            Meet.participants.add(user1)
             user1.save()
             return redirect("/"+request.POST['username']+"/meet/"+request.POST['meetName'])
     except (KeyError, user2.DoesNotExist):
@@ -176,7 +218,8 @@ def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
         recipes = Recipe.objects.filter(tags__contains = searched)
-        return render(request, "search.html", {'searched':searched, 'recipes':recipes})
+        names = Recipe.objects.filter(name__contains = searched)
+        return render(request, "search.html", {'searched':searched, 'recipes':recipes, 'names': names})
     return render(request, "search.html", {})
 
 
