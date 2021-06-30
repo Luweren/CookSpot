@@ -124,7 +124,8 @@ def signup_post(request):
 @login_required()
 def profile(request,User_username):
     user = User.objects.get(username=User_username)
-    return render(request, "user.html", {'user': user})
+    loggedin = request.user
+    return render(request, "user.html", {'user': user, 'loggedin':loggedin})
 
 @login_required()
 def meets(request):
