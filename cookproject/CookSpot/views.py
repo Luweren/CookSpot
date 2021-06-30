@@ -158,6 +158,7 @@ def newmeet_post(request):
         except (meet.DoesNotExist):
             thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
             Meet = user1.meets_set.create(name=request.POST['meetName'], recipe=thisrecipe, date=request.POST['meetDate'], desc=request.POST['description'])
+        
             user1.save()
             return redirect("/"+request.POST['username']+"/meet/"+request.POST['meetName'])
     except (KeyError, user2.DoesNotExist):
@@ -169,7 +170,8 @@ def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
         recipes = Recipe.objects.filter(tags__contains = searched)
-        return render(request, "search.html", {'searched':searched, 'recipes':recipes})
+        names = Recipe.objects.filter(name__contains = searched)
+        return render(request, "search.html", {'searched':searched, 'recipes':recipes, 'names': names})
     return render(request, "search.html", {})
 
 
