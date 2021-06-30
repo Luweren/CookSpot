@@ -210,7 +210,8 @@ def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
         recipes = Recipe.objects.filter(tags__contains = searched)
-        return render(request, "search.html", {'searched':searched, 'recipes':recipes})
+        names = Recipe.objects.filter(name__contains = searched)
+        return render(request, "search.html", {'searched':searched, 'recipes':recipes, 'names': names})
     return render(request, "search.html", {})
 
 
