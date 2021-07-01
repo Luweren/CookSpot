@@ -129,7 +129,7 @@ def profile(request,User_username):
 
 @login_required()
 def meets(request):
-    meets = Meets.objects.filter(user=request.user)
+    meets = Meets.objects.all()
     if request.method == "POST":
         searched = request.POST['searched']
         searchedMeats = Meets.objects.filter(name__contains = searched)
