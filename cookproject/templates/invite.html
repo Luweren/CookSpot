@@ -1,7 +1,7 @@
 {% extends "index.html" %}
-{% block title %} Rate User {% endblock%}
+{% block title %} Invite Users {% endblock%}
 {% block content %}
-<h3>Rate the User!</h3>
+<h3>Invite Users/Friends!</h3>
 <form action="{% url 'web:rate_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <input name="target" value="{{target}}" hidden/>
   <input name="meet" value="{{meet}}" hidden/>
@@ -11,17 +11,17 @@
             <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
         </div>
     </div>
-  <div class="form-group col-md-6">
-    <label for="ratings">What is your rating for <b>{{target}}</b>?</label>
-    <select id="rating" class="form-control" name="rating">
-      <option value="none" selected>Choose...</option>
-      <option value="{{1}}" >{{1}}</option>
-      <option value="{{2}}" >{{2}}</option>
-      <option value="{{3}}" >{{3}}</option>
-      <option value="{{4}}" >{{4}}</option>
-      <option value="{{5}}" >{{5}}</option>
-    </select>
+  <div class="col-sm-12 col-md-4 ">
+      <div class="card">
+          <div class="card-body">
+              <h5 class="card-title">Recommended Users:</h5>
+            </div>
+          {% for rateduser in givenscores %}
+              <li class="list-group-item"><a>{{rateduser}} </a>
+              <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+              </li>
+            {% endfor %}
+        </div>
   </div>
-  <button type="submit" class="btn btn-primary">Rate</button>
 </form>
 {% endblock %}

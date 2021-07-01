@@ -159,7 +159,26 @@ def meetjoin(request, User_username, Meets_name):
 def meetinvite(request, User_username, Meets_name):
     owner = User.objects.get(username=User_username)
     meet = owner.meets_set.get(name=Meets_name)
-    return render(request, "invite.html", {'owner': owner, 'meet': meet})
+    givenratings = request.user.givenratings.all()
+    givenusers = []
+    scores = []
+    x = givenratings.all().values('touser').distinct()
+    for rating in givenratings:
+        if rating.touser.username not in givenusers:
+            givenusers.append(rating.touser.username)
+    for user in givenusers:
+        score=0
+        counter = 0
+        for rating in givenratings:
+            if rating.touser.username == user:
+                score += rating.rating
+                counter += 1
+        score /= counter
+        scores.append(score)
+    userandscore =list(zip(scores, givenusers))
+    userandscore.sort(reverse=True)
+
+    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore})
 
 
 @login_required()
