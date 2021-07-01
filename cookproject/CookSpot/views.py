@@ -155,6 +155,12 @@ def meetjoin(request, User_username, Meets_name):
     meet.participants.add(request.user)
     return redirect("/"+User_username+"/meet/"+Meets_name+"/")
 
+@login_required()
+def meetinvite(request, User_username, Meets_name):
+    owner = User.objects.get(username=User_username)
+    meet = owner.meets_set.get(name=Meets_name)
+    return render(request, "invite.html", {'owner': owner, 'meet': meet})
+
 
 @login_required()
 def meetrate(request, User_username, Meets_name, Target_username):

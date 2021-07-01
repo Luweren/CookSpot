@@ -80,10 +80,17 @@ class UserRating(models.Model):
     meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.PROTECT)
     rating = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(5)])
     def __str__(self):
-        return str(self.rating) + " by " + str(self.fromuser) + " for " + str(self.touser)
+        return str(self.rating) + " by " + str(self.fromuser) + " for " + str(self.touser) + " from " + str(self.meet)
     class META:
         constraints = [
         models.UniqueConstraint(fields=["fromuser", "touser", "meet"], name="1 Rating per Meet")
     ]
+
+class Invite(models.Model):
+    fromuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='giveninvites')
+    touser =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='gotteninvites')
+    meet = models.ForeignKey(Meets, on_delete=models.CASCADE)
+    def __str__(self):
+        return "Invite by " + str(self.fromuser) + " to " + str(self.touser) + " for " + str(self.meet) + " on " + str(self.meet.date)
 
 

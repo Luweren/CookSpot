@@ -134,6 +134,17 @@
             {% endfor %}
         </div>
   </div>
+  
+  <div class="col-sm-12 col-md-4 ">
+      <div class="card">
+          <div class="card-body">
+              <h5 class="card-title">Your Invites:</h5>
+            </div>
+          {% for invite in user.gotteninvites.all %}
+              <li class="list-group-item"><a href="/{{invite.meet.user}}/meet/{{invite.meet.name}}">{{invite}}</a></li>
+            {% endfor %}
+        </div>
+  </div>
 {% else %}
 <div class="row py-2">
   <div class="col-sm-12 col-md-4 ">
@@ -170,17 +181,6 @@
             </div>
           {% for meet in user.meets_set.all %}
               <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
-            {% endfor %}
-        </div>
-  </div>
-
-  <div class="col-sm-12 col-md-4 ">
-      <div class="card">
-          <div class="card-body">
-              <h5 class="card-title">Meets that {{user.username}} has participated in.</h5>
-            </div>
-          {% for meet in user.participants.all %}
-              <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a></li>
             {% endfor %}
         </div>
   </div>

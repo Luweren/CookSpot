@@ -5,7 +5,11 @@
         <div class="col-md-4 cols-12 offset-md-1">
             <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
             <h5>What are we making? <a href="{% url 'web:recipe' meet.user meet.recipe%}">{{meet.recipe}}</a> </h5>
-            <h5>Participants: {{meet.participating}} /{{meet.maximumparticipants}}</h5>
+            <h5>Participants: {{meet.participating}} /{{meet.maximumparticipants}}
+                {% if meet.participating < meet.maximumparticipants%}
+                <a href="invite" class="btn btn-info" role="button">Invite People</a>
+                {% endif %}
+            </h5>
             {% for participant in meet.participants.all %}
             {% if participant != request.user%}
             <h5><a href="/{{participant.username}}/myprofile">{{participant.username}}</a> -

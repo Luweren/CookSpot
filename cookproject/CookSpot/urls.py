@@ -19,6 +19,7 @@ urlpatterns=[
     path("meets/", views.meets, name="meets"),
     path('<str:User_username>/meet/<str:Meets_name>/', views.meet, name='meet'),
     path('<str:User_username>/meet/<str:Meets_name>/join', views.meetjoin, name='meetjoin'),
+    path('<str:User_username>/meet/<str:Meets_name>/invite', views.meetinvite, name='meetinvite'),
     path('<str:User_username>/meet/<str:Meets_name>/rate/<str:Target_username>', views.meetrate, name='rate'),
     path('rate/post', views.meetrate_post, name='rate_post'),
     path('editrate/post', views.editrate_post, name='editrate_post'),
