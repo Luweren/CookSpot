@@ -1,17 +1,17 @@
 from django.urls import path
 from . import views
-
+from .views import delete_view
 
 app_name = 'web'
-urlpatterns=[
+urlpatterns = [
     path("users/", views.users, name="users"),
     path("allrecipes/", views.allrecipes, name="allrecipes"),
     path("", views.homepage, name="home"),
     path("homepage/", views.homepage, name="home"),
-    path("accounts/login/",views.login, name='login'),
+    path("accounts/login/", views.login, name='login'),
     path("accounts/logout/", views.homepage, name="home"),
-    path("signup/",views.signup, name='signup'),
-    path("<str:User_username>/newrecipe/",views.newrecipe, name='newrecipe'),
+    path("signup/", views.signup, name='signup'),
+    path("<str:User_username>/newrecipe/", views.newrecipe, name='newrecipe'),
     path('<str:User_username>/recipe/<str:Recipe_name>/', views.recipe, name='recipe'),
     path("newrecipe/post/", views.newrecipe_post, name='newrecipe_post'),
     path("signup/post/", views.signup_post, name='signup_post'),
@@ -28,4 +28,6 @@ urlpatterns=[
     path('newmeet/post', views.newmeet_post, name='newmeet_post'),
     path('search/', views.search, name="search-things"),
     path('editUserDetails', views.editUserDetails, name="editUserDetails"),
+    path("<int:id>/addtofav/<str:ur>", views.add_to_fav, name="addtofav"),
+    path('<id>/delete', delete_view, name='delete_fav'),
 ]

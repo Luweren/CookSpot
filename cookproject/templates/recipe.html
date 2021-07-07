@@ -33,6 +33,7 @@
     <div class="row">
         <div class="col-md-4 cols-12 offset-md-1">
             <h4>Ingredients</h4>
+            <a href="{% url 'web:addtofav' id=recipe.id  ur='rec' %}">Add to Fav</a>
             <table class="table">
                 <tbody>
                   {% for Ingredients in recipe.ingredients_set.all %}
