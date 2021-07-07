@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block search %}
+    <form  class="form-inline" class="text-right" method="POST" name="userForm" action="{% url 'web:users' %}">{% csrf_token %} 
+        <input class="form-control mr-sm-2" type="search" placeholder="Search for someone" aria-label="Search" name="searched">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" onclick="document.userForm.submit()" >Search</button>
+    </form>
+{% endblock %}
+{% block content %}
+
+{% if searched %}
+    <h1>You searched for {{ searched }} </h1>
+    {% if users|length == 0 %}
+        <h3> Sorry, there are no users with the name {{searched}}</h3>
+    {% else %}
+        <h3>Here are the users with the name {{ searched }}!</h3>
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+        {% for user in users %}
+                <div class="card" style="width: 18rem; margin: 10px">
+                    <img src="{{ user.profile_photo }}" class="card-img-top" >
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.first_name}} {{user.last_name}}</a> </h5>
+                        </div>
+                </div>
+            {% endfor %}
+    </div>
+    {% endif %}
+
+{% else %} 
+        <h1> pls search something!</h1>
+{% endif %}
+{% endblock %}
