@@ -2,24 +2,31 @@
 {% block title %}Users{% endblock %}
 {% block content %}
 <div class="container-fluid">
-  <div class="row" >
-    <div class="cols-12 col-md-6 align-self-center" >
-      <h1>Our Users</h1>
-    </div>
+  <div class="row">
+    <h1>Our Users</h1>
   </div>
-  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+  <div class="row" style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for user in users %}
-        <div class="card" style="width: 18rem; margin: 10px">
-          <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a> </h5>
-                  <p class="card-text">Click this and go the user's page.</p>
-                  <p class="card-text">Rating={{user.profile.get_av_rating}}</p>
-              </div>
-        </div>
-        {% endfor %}
+    <div style="padding: 10px;">
+      <figure >
+       <img 
+        {% if user.profile.profile_photo != ""%}
+          src="{{user.profile.profile_photo}}"
+        {% else %}
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+        {% endif %} 
+        class="img-fluid"  alt="Responsive Image" 
+        width="307" height="240" /> 
+        <figcaption>
+          <h4><a href="/{{user.username}}/myprofile">{{user.username}}</a></h4> 
+          <p style="color: white;">User rating={{user.profile.get_av_rating}}</p>
+        
+        </figcaption>
+      </figure>
+    </div>
+    
+    {% endfor %}
   </div>
-  
 </div>
 
 {% endblock %}

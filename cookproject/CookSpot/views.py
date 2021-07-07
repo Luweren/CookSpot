@@ -33,7 +33,7 @@ def users(request):
     if request.method == "POST":
         searched = request.POST['searched']
         searchedUsers = User.objects.filter(username__contains=searched)
-        return render(request, "users.html", {'searched': searched, 'users': searchedUsers})
+        return render(request, "searchUser.html", {'searched': searched, 'users': searchedUsers})
     # return render(request, "users.html", {})
 
     return render(request, "users.html", {'users': users})

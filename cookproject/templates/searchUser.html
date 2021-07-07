@@ -16,9 +16,10 @@
     <div style="display: flex; flex-direction: row; flex-wrap: wrap">
         {% for user in users %}
                 <div class="card" style="width: 18rem; margin: 10px">
-                    <img src="{{ user.profile_photo }}" class="card-img-top" >
+                    <img src="{{ user.profile.profile_photo }}" class="card-img-top" >
                         <div class="card-body">
-                            <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.first_name}} {{user.last_name}}</a> </h5>
+                            <h3 class="card-title">{{user.first_name}} {{user.last_name}} </h3>
+                            <h5><a href="/{{user.username}}/myprofile">{{user.username}}</a></h5>
                         </div>
                 </div>
             {% endfor %}

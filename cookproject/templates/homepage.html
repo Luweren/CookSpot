@@ -1,31 +1,49 @@
 {% extends "index.html" %}
+{% block css %}
+  <style>
+    .btn {
+      background-color: #9DC88D !important;
+      color: black !important;
+    }
+    p{
+      font-size: 25px;
+      color: white;
+    }
+
+    a {
+      color: #9DC88D;
+    }
+  </style>
+{% endblock css %}
 {% block title %}Cookspot{% endblock %}
 {% block content %}
 <div class="container-fluid ">
   <div class="row py-2">
+    <!-- Meets -->
     <div class="col-sm-12 col-md-4 ">
-      <div class="card">
-        <div class="card-header">
-          M-eats in the next 5 days!
-        </div>
-        <ul class="list-group list-group-flush">
-          {% for meet in meets %}
-            {% if user.is_authenticated %}
-              <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> at <a href="/{{meet.user}}/myprofile">{{meet.user}}'s</a>
-                <span style="float:right;"> {{meet.date}} </span>
-              </li>
-            {% else %}
-              <li class="list-group-item"><a href="/accounts/login">{{meet.name}}</a> at <a href="/accounts/login">{{meet.user}}'s</a>
-                <span style="float:right;"> {{meet.date}} </span>
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
+      <div class="row">
+        <h3>M-eats in the next 5 days!</h3>
       </div>
-      {% if user.is_authenticated %}
-      <a id="meetButton" class="btn btn-info" href="/{{user.username}}/newmeet">Organize your own meet!</a></p>
+      {% if meets|length == 0 %} 
+        <p>There are no m-eats organized in the next 5 days! Why don't you organize a m-eat?</p>
       {% else %}
-      <a id="meetButton" class="btn btn-info" href="/accounts/login">Organize your own meet!</a></p>
+        {% for meet in meets %}
+          {% if user.is_authenticated %}
+            <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> at <a href="/{{meet.user}}/myprofile">{{meet.user}}'s</a>
+              <span style="float:right;"> {{meet.date}} </span>
+            </li>
+          {% else %}
+            <li class="list-group-item"><a href="/accounts/login">{{meet.name}}</a> at <a href="/accounts/login">{{meet.user}}'s</a>
+              <span style="float:right;"> {{meet.date}} </span>
+            </li>
+          {% endif %}
+       {% endfor %}
+      {% endif %}
+      
+      {% if user.is_authenticated %}
+      <a id="meetButton" class="btn btn-link" href="/{{user.username}}/newmeet">Organize your own meet!</a></p>
+      {% else %}
+      <a id="meetButton" class="btn btn-link" href="/accounts/login">Organize your own meet!</a></p>
       {% endif %}
       <form id="meetForm" style="visibility: hidden;">
         <div class="form-group">
@@ -65,31 +83,31 @@
         <button type="submit" class="btn btn-primary" onclick="meetClose()">Create the meet!</button>
       </form>
     </div>
+
+    <!-- User recipe -->
     <div class="col-6 offset-md-2">
       <div class="row">
-        <div class="col-auto">
-          <h4>Featured User Recipe</h4>
-          <div class="card" style="width: 25rem;">
-            <img class="card-img-top"
-              {% if recipe.image != ""%}
-              src="{{recipe.image}}"
-              {% else %}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
-              {% endif %}
-              height="300"
-            >
-            <div class="card-body">
-              <h5 class="card-title">{{recipe.name}}  by <a href="{% url 'web:myprofile' recipe.user %}">{{recipe.user}}</a></h5>
-              <p class="card-text">{{recipe.description}}</p>
-              {% if user.is_authenticated %}
-              <a href="/{{user.username}}/recipe/{{recipe.name}}" class="btn btn-primary">Go to the recipe?</a>
-              {% else %}
-              <a href="/accounts/login" class="btn btn-primary">Go to the recipe?</a>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+        <h3 >Featured User Recipe</h3>
       </div>
+      <div class="row">
+        <a href="/{{recipe.user}}/recipe/{{recipe.name}}" >
+          <img 
+            {% if recipe.image != ""%}
+              src="{{recipe.image}}"
+            {% else %}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+            {% endif %} 
+            class="img-fluid"  alt="Responsive Image" 
+            width="307" height="240" /> 
+        </a>
+        
+      </div>
+      <div class="row">
+        <p>
+          <h4>{{recipe.name}}  by <a href="{% url 'web:myprofile' recipe.user %}">{{recipe.user}}</a></h4>
+        </p>
+      </div>
+      
     </div>
   </div>
 </div>
