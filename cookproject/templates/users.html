@@ -2,24 +2,24 @@
 {% block title %}Users{% endblock %}
 {% block content %}
 <div class="container-fluid">
-  <div class="row" >
-    <div class="cols-12 col-md-6 align-self-center" >
+  <div class="row">
+    <div class="cols-12 col-md-6 align-self-center">
       <h1>Our Users</h1>
     </div>
   </div>
   <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for user in users %}
-        <div class="card" style="width: 18rem; margin: 10px">
-          <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a> </h5>
-                  <p class="card-text">Click this and go the user's page.</p>
-                  <p class="card-text">Rating={{user.profile.get_av_rating}}</p>
-              </div>
-        </div>
-        {% endfor %}
+    <div class="card" style="width: 18rem; margin: 10px">
+      <img src="{{user.profile.profile_photo}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><a href="/{{user.username}}/myprofile">{{user.username}}</a> </h5>
+        <p class="card-text">Click this and go the user's page.</p>
+        <p class="card-text">Rating={{user.profile.get_av_rating}}</p>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  
+
 </div>
 
 {% endblock %}

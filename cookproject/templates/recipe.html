@@ -1,62 +1,63 @@
 {% extends "index.html" %}
 {% block title %} {{recipe.name}} {% endblock%}
 {% block content %}
-    <div class="row"> <!-- picture of recipe and details -->
-        <div class="col-md-4 cols-12 offset-md-1">
-            <h4>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h4>
-            <h6>{{recipe.description}}</h6>
-            <div class="form-group">
-                {% if recipe.image %}
-                    <img src="{{recipe.image}}" class="img-fluid mb-4"></br></br>
-                {% endif %}
-            </div>
+<div class="row">
+    <!-- picture of recipe and details -->
+    <div class="col-md-4 cols-12 offset-md-1">
+        <h4>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h4>
+        <h6>{{recipe.description}}</h6>
+        <div class="form-group">
+            {% if recipe.image %}
+            <img src="{{recipe.image}}" class="img-fluid mb-4"></br></br>
+            {% endif %}
         </div>
-        <div class="col-md-4 cols-12 offset-md-1 align-self-center " > 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Details</h5>
-                    <ul class="list-group list-group-flush">
-                        <!--<li class="list-group-item">Tags:</li>
+    </div>
+    <div class="col-md-4 cols-12 offset-md-1 align-self-center ">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Details</h5>
+                <ul class="list-group list-group-flush">
+                    <!--<li class="list-group-item">Tags:</li>
                         <li class="list-group-item">Difficulty:</li>
                         <li class="list-group-item">Preparation time:</li>
                         <li class="list-group-item">Cooking time:</li>-->
-                        <li>Tags: {{recipe.tags}}</li>
-                        <li>Difficulty: {{recipe.difficulty}}</li>
-                        <li>Preparation Time: {{recipe.preparationtime}}</li>
-                        <li>Cooking time: {{recipe.cookingtime}}</li>
-                    </ul>
-                </div>
+                    <li>Tags: {{recipe.tags}}</li>
+                    <li>Difficulty: {{recipe.difficulty}}</li>
+                    <li>Preparation Time: {{recipe.preparationtime}}</li>
+                    <li>Cooking time: {{recipe.cookingtime}}</li>
+                </ul>
             </div>
-             
         </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-4 cols-12 offset-md-1">
-            <h4>Ingredients</h4>
-            <a href="{% url 'web:addtofav' id=recipe.id  ur='rec' %}">Add to Fav</a>
-            <table class="table">
-                <tbody>
-                  {% for Ingredients in recipe.ingredients_set.all %}
-                  <tr>
-                      <td>{{Ingredients.name}}</td>
-                      <td>{{Ingredients.amount}}</td>
-                  <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
-                      <label for="checkbox_id"></label>
-                      </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-        </div>
-        <div class="col-md-4 cols-12 offset-md-1">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Instructions</h4>
-                    <p> {{recipe.instructions}}
-                    </p>
-                </div>
+</div>
+<div class="row">
+    <div class="col-md-4 cols-12 offset-md-1">
+        <h4>Ingredients</h4>
+        <a href="{% url 'web:addtofav' id=recipe.id  ur='rec' %}">Add to Fav</a>
+        <table class="table">
+            <tbody>
+                {% for Ingredients in recipe.ingredients_set.all %}
+                <tr>
+                    <td>{{Ingredients.name}}</td>
+                    <td>{{Ingredients.amount}}</td>
+                    <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+                        <label for="checkbox_id"></label>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4 cols-12 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Instructions</h4>
+                <p> {{recipe.instructions}}
+                </p>
             </div>
-            
         </div>
+
     </div>
+</div>
 {% endblock %}

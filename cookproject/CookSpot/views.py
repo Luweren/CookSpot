@@ -109,7 +109,7 @@ def newrecipe_post(request):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
                                               amount=request.POST.getlist(
                                                   'ingredientamount[]')[i] +
-                                                     request.POST.getlist('ingredientmeasurement[]')[i])
+                                              request.POST.getlist('ingredientmeasurement[]')[i])
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
@@ -151,12 +151,12 @@ def add_to_fav(request, id, ur):
         Favourite.objects.get_or_create(user=user, cookfav=cook)
     return redirect('/')
 
+
 @login_required()
 def delete_view(request, id):
     obj = get_object_or_404(Favourite, id=id)
     obj.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
 
 
 @login_required()
@@ -175,7 +175,8 @@ def meets(request):
 def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
-    ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
+    ingredients = Ingredients.objects.filter(
+        recipe=meet.recipe).order_by("name")
     all_users = User.objects.all()
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
@@ -234,7 +235,8 @@ def meetrate_post(request):
     user = User.objects.get(username=request.POST['cuser'])
     target = User.objects.get(username=request.POST['target'])
     meet = Meets.objects.get(name=request.POST['meet'])
-    user.givenratings.create(fromuser=user, touser=target, meet=meet, rating=request.POST['rating'])
+    user.givenratings.create(fromuser=user, touser=target,
+                             meet=meet, rating=request.POST['rating'])
     user.save()
     return redirect("/" + meet.user.username + "/meet/" + meet.name + "/")
 
@@ -269,7 +271,7 @@ def newmeet_post(request):
             thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
             Meet = user1.meets_set.create(name=request.POST['meetName'], maximumparticipants=request.POST['pnumber'],
                                           recipe=thisrecipe, date=request.POST['meetDate'],
-                                          desc=request.POST['description'])
+                                          desc=request.POST['description'], location=request.POST['location'])
             Meet.participants.add(user1)
             user1.save()
             return redirect("/" + request.POST['username'] + "/meet/" + request.POST['meetName'])

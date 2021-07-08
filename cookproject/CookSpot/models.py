@@ -71,10 +71,12 @@ class Meets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     maximumparticipants = models.IntegerField(blank=True, null=True)
-    participants = ManyToManyField(User, related_name="participants", blank=True)
+    participants = ManyToManyField(
+        User, related_name="participants", blank=True)
     name = models.CharField(max_length=254)
     date = models.DateField()
     desc = models.TextField()
+    location = models.CharField(max_length=254)
 
     def participating(self):
         return len(self.participants.all())
@@ -84,23 +86,30 @@ class Meets(models.Model):
 
 
 class UserRating(models.Model):
-    fromuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='givenratings')
-    touser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gottenratings')
-    meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.PROTECT)
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    fromuser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='givenratings')
+    touser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='gottenratings')
+    meet = models.ForeignKey(
+        Meets, blank=True, null=True, on_delete=models.PROTECT)
+    rating = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):
         return str(self.rating) + " by " + str(self.fromuser) + " for " + str(self.touser) + " from " + str(self.meet)
 
     class META:
         constraints = [
-            models.UniqueConstraint(fields=["fromuser", "touser", "meet"], name="1 Rating per Meet")
+            models.UniqueConstraint(
+                fields=["fromuser", "touser", "meet"], name="1 Rating per Meet")
         ]
 
 
 class Invite(models.Model):
-    fromuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='giveninvites')
-    touser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gotteninvites')
+    fromuser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='giveninvites')
+    touser = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='gotteninvites')
     meet = models.ForeignKey(Meets, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -109,6 +118,9 @@ class Invite(models.Model):
 
 
 class Favourite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, blank=True, null=True)
-    cookfav = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favcook', null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, blank=True, null=True)
+    cookfav = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='favcook', null=True, blank=True)

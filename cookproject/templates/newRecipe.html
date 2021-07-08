@@ -3,7 +3,7 @@
 {% block content %}
 <h3>Add a new recipe to your profile!</h3>
 <form action="{% url 'web:newrecipe_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <input name="username" value="{{user.username}}" hidden/>
+  <input name="username" value="{{user.username}}" hidden />
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="recipeName">Name</label>
@@ -13,11 +13,11 @@
       <label for="recipeLevel">Level</label>
       <select id="recipeLevel" class="form-control" name="difficulty">
         <option value="none" selected>Choose...</option>
-        <option value="None" >Anyone can do it</option>
-        <option value="Easy" >Beginner</option>
-        <option value="Intermediate" >Intermediate</option>
-        <option value="Difficult" >Difficult</option>
-        <option value="Professional" >Professional</option>
+        <option value="None">Anyone can do it</option>
+        <option value="Easy">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Difficult">Difficult</option>
+        <option value="Professional">Professional</option>
       </select>
     </div>
   </div>
@@ -33,17 +33,16 @@
   </div>
   <div class="form-group">
     <label for="inputAddress3">Preparation Time</label>
-    <input type="text" class="form-control" id="inputAddress3" name="preparationtime"
-      placeholder="Preparation Time">
+    <input type="text" class="form-control" id="inputAddress3" name="preparationtime" placeholder="Preparation Time">
   </div>
   <div class="form-group">
     <label for="inputAddress4">Cooking Time</label>
-    <input type="text" class="form-control" id="inputAddress4" name="cookingtime"
-      placeholder="Time Required to Cook">
+    <input type="text" class="form-control" id="inputAddress4" name="cookingtime" placeholder="Time Required to Cook">
   </div>
   <div class="form-group">
     <label for="inputAddress5">Image</label>
-    <input type="url" alt="here goes picture" placeholder="Enter the URL of the image" class="form-control" id="inputAddress5" name="image" pattern="https://.*">
+    <input type="url" alt="here goes picture" placeholder="Enter the URL of the image" class="form-control"
+      id="inputAddress5" name="image" pattern="https://.*">
   </div>
 
   How many ingredients do you need?
@@ -53,13 +52,13 @@
       <button class="btn btn-outline-secondary" type="button" onclick="ingredients()">Add the ingredients</button>
     </div>
   </div>
-  
+
   <div class="form-inline">
     <div class="form-group col-md-6">
       <div id="ingredientsTable">
 
       </div>
-      
+
 
     </div>
   </div>
@@ -72,8 +71,8 @@
 <script>
   function ingredients() {
     var val = document.getElementById("ingredientsNumber").value;
-    if(val) {
-      document.getElementById("ingredientsTable").innerHTML=`<table>
+    if (val) {
+      document.getElementById("ingredientsTable").innerHTML = `<table>
         <thead>
           <tr>
             <th scope="col">Amount</th>
@@ -84,9 +83,9 @@
         <tbody id="ingredientsBody">
         </tbody>
       </table>`
-      for(i=0;i<parseInt(val);i++){
-        document.getElementById("ingredientsBody").innerHTML += 
-        `<td><label for="ingredientAmount"></label>
+      for (i = 0; i < parseInt(val); i++) {
+        document.getElementById("ingredientsBody").innerHTML +=
+          `<td><label for="ingredientAmount"></label>
           <input type="text" class="form-control" id="ingredientAmount" name="ingredientamount[]"  placeholder="Amount for 4 People">
         </td>
         <td>
@@ -108,8 +107,8 @@
           <input type="text" class="form-control" id="ingredientName"  name="ingredientname[]">
         </td>`
       }
-            
+
     }
-} 
+  }
 </script>
 {% endblock %}
