@@ -2,7 +2,10 @@
 {% block css %}
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');  
-  h3 {font-family: 'Open Sans Condensed', sans-serif;}
+  h1 {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 60px;
+  }
   img {
     border-radius: 70%;
     width: 150px;
@@ -17,7 +20,25 @@
     float: right;
     }
   }
+  .card{
+    background-color: #9DC88D !important;
+    margin: 10px;
+  }
+  .card  button, .btn{
+    background-color: white !important;
+    color: black !important;
+  }
   
+  .card li > a {
+    background-color: #9DC88D !important;
+    
+  }
+  h4 {color: black;}
+  #detailsList > li {
+    background-color: #9DC88D;
+    color: white;
+    font-size: 19px;
+  }
 </style>
 {% endblock %}
 
@@ -32,7 +53,7 @@
     {% endif %}
   </div>
   <div class="col-sm-7 col-md-7 align-self-center">
-    <h3>|{{user.first_name}} {{user.last_name}}</h3>
+    <h1>|{{user.first_name}} {{user.last_name}}</h1>
       {% if request.user.pk != user.pk %}
         <a href="{% url 'web:addtofav' id=user.id ur='cook'  %}">Add to Fav</a>
       {% endif %}
@@ -44,9 +65,9 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Details</h5>
+              <h4 class="card-title">Details</h4>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Edit profile details</button>
+              <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Edit profile details</button>
           <ul class="list-group list-group-flush" id="detailsList">
             <li class="list-group-item">My username: {{user.username}}</li>
             <li class="list-group-item">My email: {{user.email}}</li>
@@ -103,23 +124,23 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">My recipes</h5>
+              <h4 class="card-title">My recipes</h4>
             </div>
-          <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-flush" >
             {% for recipe in user.recipe_set.all %}
-              <li class="list-group-item"><a href="/{{user.username}}/recipe/{{recipe.name}}">{{recipe.name}}</a></li>
+              <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{user.username}}/recipe/{{recipe.name}}" style="color: white !important; font-size: 19px;">{{recipe.name}}</a></li>
             {% endfor %}
           </ul>
-          <a href="/{{user.username}}/newrecipe/" class="btn btn-info" role="button">Add New Recipe</a>
+          <a href="/{{user.username}}/newrecipe/" class="btn " role="button">Add New Recipe</a>
         </div>
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">My Favourite recipe</h5>
+              <h4 class="card-title">My Favourite recipe</h4>
           </div>
           {% for rec in fav_list%}
               {% if rec.recipe %}
-              <li class="list-group-item">
-                  <a href="/{{rec.recipe.user}}/recipe/{{rec.recipe.name}}">{{rec.recipe.name}}</a>
+              <li class="list-group-item" style="background-color: #9DC88D;">
+                  <a href="/{{rec.recipe.user}}/recipe/{{rec.recipe.name}}" style="color: white !important; font-size: 19px;">{{rec.recipe.name}}</a>
                   <a href="{% url 'web:delete_fav' id=rec.id  %}"><i class="fa fa-trash" style="font-size:24px; position: absolute; right: 10px"></i></a>
               </li>
               {% endif %}
@@ -131,20 +152,20 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Meets that you have organized</h5>
+              <h4 class="card-title">Meets that you have organized</h4>
             </div>
           {% for meet in user.meets_set.all %}
-              <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
+              <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{user.username}}/meet/{{meet.name}}" style="color: white !important;font-size: 19px; ">{{meet.name}}</a></li>
             {% endfor %}
-          <a href="/{{user.username}}/newmeet/" class="btn btn-info" role="button">Create a new meet</a>
+          <a href="/{{user.username}}/newmeet/" class="btn " role="button">Create a new meet</a>
         </div>
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">My Favourite Cooks</h5>
+              <h4 class="card-title">My Favourite Cooks</h4>
           </div>
           {% for rec in fav_list%}
               {% if rec.cookfav %}
-              <li class="list-group-item"><a href="/{{rec.cookfav}}/myprofile">{{rec.cookfav.username}}</a>
+              <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{rec.cookfav}}/myprofile" style="color: white !important; font-size: 19px;">{{rec.cookfav.username}}</a>
               <a href="{% url 'web:delete_fav' id=rec.id  %}"><i class="fa fa-trash" style="font-size:24px; position: absolute; right: 10px"></i></a>
               </li>
               {% endif %}
@@ -156,21 +177,21 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Meets that you have participated in.</h5>
+              <h4 class="card-title">Meets that you have participated in.</h4>
             </div>
           {% for meet in user.participants.all %}
-              <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a></li>
-            {% endfor %}
+            <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{meet.user}}/meet/{{meet.name}}" style="color: white !important; font-size: 19px;">{{meet.name}}</a></li>
+          {% endfor %}
         </div>
   </div>
   
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Your Invites:</h5>
+              <h4 class="card-title">Your Invites:</h4>
             </div>
           {% for invite in user.gotteninvites.all %}
-              <li class="list-group-item"><a href="/{{invite.meet.user}}/meet/{{invite.meet.name}}">{{invite}}</a></li>
+              <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{invite.meet.user}}/meet/{{invite.meet.name}}" style="color: white !important; font-size: 19px;">{{invite}}</a></li>
             {% endfor %}
         </div>
   </div>
@@ -179,7 +200,7 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Details</h5>
+            <h4 class="card-title">Details</h4>
             <ul class="list-group list-group-flush" id="detailsList">
               <li class="list-group-item">Username: {{user.username}}</li>
               <li class="list-group-item">Email: {{user.email}}</li>
@@ -193,7 +214,7 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Recipes of {{user.username}}</h5>
+              <h4 class="card-title">Recipes of {{user.username}}</h4>
             </div>
           <ul class="list-group list-group-flush">
             {% for recipe in user.recipe_set.all %}
@@ -206,13 +227,14 @@
   <div class="col-sm-12 col-md-4 ">
       <div class="card">
           <div class="card-body">
-              <h5 class="card-title">Meets of {{user.username}}</h5>
-            </div>
+              <h4 class="card-title">Meets of {{user.username}}</h4>
+          </div>
           {% for meet in user.meets_set.all %}
-              <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
-            {% endfor %}
-        </div>
+            <li class="list-group-item"><a href="/{{user.username}}/meet/{{meet.name}}">{{meet.name}}</a></li>
+          {% endfor %}
+      </div>
   </div>
+</div>
 {% endif %}
 
 
