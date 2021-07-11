@@ -20,6 +20,29 @@
         border-radius: 4px;
         font-weight: bold;
       }
+      #title {font-family: 'Zen Loop';}
+      body {
+        background-color: #164A41;
+      }
+      .navbar-brand
+      {
+        font-size: 2.5rem;
+      }
+      .navbar-nav {
+        font-size: 1.3rem;
+      }
+      button {
+        background-color: #9DC88D !important;
+        color: black !important;
+      }
+      
+      h1,h2, h3, h4,a {
+        color: #9DC88D;
+        font-family: 'Quicksand', sans-serif;
+      }
+      p {
+        color:#F1B24A !important;
+      }
   </style>
   </head>
   <body>
@@ -51,7 +74,7 @@
       <section class ="Form align-self-center">
           <div class="container align-self-center">
                 <div class="px-5 pt-5 align-self-center">
-                    <h1 class='text-center'> CookSpot </h1>
+                    <h1 class='text-center' id="title"> CookSpot </h1>
                     <h4>Sign into your account</h4>
                     <form action="{% url 'login'%}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
