@@ -29,12 +29,12 @@
             color: black !important;
           }
           
-          h1,h2, h3, h4,a {
+          h1, h2, h3, h4, a {
             color: #9DC88D;
             font-family: 'Quicksand', sans-serif;
           }
           li > a {
-            color:#F1B24A !important;
+            color:white !important;
           }
         </style>
         {% block css %}
@@ -44,8 +44,8 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #4D774E; ">
-            <a class="navbar-brand" href="/homepage" id="title" style="color:#F1B24A !important;">CookSpot</a>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9DC88D; ">
+            <a class="navbar-brand" href="/homepage" id="title" style="color:white !important;">CookSpot</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,7 +54,7 @@
               <ul class="navbar-nav" >
                 {% if user.is_authenticated %}
                   <li class="nav-item">
-                    <a class="nav-link" href="/{{user.username}}/mycookgraphy" style="color:#F1B24A;">My Cookgraphy </a>
+                    <a class="nav-link" href="/{{user.username}}/mycookgraphy" >My Cookgraphy </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/{{user.username}}/newmeet">Let's cook</a>
@@ -89,7 +89,7 @@
               {% block search %}
                 <form  class="form-inline" class="text-right" method="POST" action="{% url 'web:search-things' %}" id="searchbar" > {% csrf_token %}
                   <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
-                  <button class="btn btn-outline-link my-2 my-sm-0" type="submit">Search</button>
+                  <button class="btn btn-outline-link my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Search</button>
                 </form>
               {% endblock %}
               <ul class="navbar-nav" >

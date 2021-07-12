@@ -1,4 +1,18 @@
 {% extends "index.html" %}
+{% block css %}
+<style>
+  h4{
+    color: #F1B24A;
+  }
+  .card li {
+    color: black !important;
+  }
+  .list-group-item > a{
+    color: black !important;
+    font-size: 20px;
+  }
+</style>
+{% endblock %}
 {% block title %} Invite Users {% endblock%}
 {% block content %}
 <h3>Invite Users/Friends!</h3>
@@ -7,21 +21,37 @@
   <input name="meet" value="{{meet}}" hidden/>
   <input name="cuser" value="{{request.user}}" hidden/>
   <div class="row"> <!-- picture of recipe and details -->
-        <div class="col">
-            <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
-        </div>
+    <div class="col">
+      <h3>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h3>
     </div>
+  </div>
   <div class="col-sm-12 col-md-4 ">
-      <div class="card">
-          <div class="card-body">
-              <h5 class="card-title">Recommended Users:</h5>
-            </div>
-          {% for rateduser in givenscores %}
-              <li class="list-group-item"><a>{{rateduser}} </a>
-              <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
-              </li>
-            {% endfor %}
-        </div>
+    <div class="card">
+      <div class="card-body">
+        {% if givenscores|length > 0 %}
+          <h4 class="card-title">Recommended Users according to ratings:</h4>
+        {% else %}
+          <h4 class="card-title">Recommended Users:</h4>
+        {% endif %}
+        
+      </div>
+      {% if givenscores|length > 0 %}
+        {% for rateduser in givenscores %}
+          <li class="list-group-item" style="color: black !important;"><a>{{rateduser}} </a>
+          <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+          </li>
+        {% endfor %}
+        
+      {% else %}
+        {% for user in allusers%}
+          <li class="list-group-item" style="color: black !important;"><a>{{user.username}} </a>
+          <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+          </li>
+        {% endfor %}
+        
+      {% endif %}
+      
+    </div>
   </div>
 </form>
 {% endblock %}

@@ -33,7 +33,12 @@
     background-color: #9DC88D !important;
     
   }
+
+  .card li {
+    background-color: #9DC88D;
+  }
   h4 {color: black;}
+
   #detailsList > li {
     background-color: #9DC88D;
     color: white;
@@ -153,12 +158,12 @@
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">Meets that you have organized</h4>
-            </div>
+          </div>
           {% for meet in user.meets_set.all %}
-              <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{user.username}}/meet/{{meet.name}}" style="color: white !important;font-size: 19px; ">{{meet.name}}</a></li>
-            {% endfor %}
+            <li class="list-group-item" style="background-color: #9DC88D;"><a href="/{{user.username}}/meet/{{meet.name}}" style="color: white !important;font-size: 19px; ">{{meet.name}}</a></li>
+          {% endfor %}
           <a href="/{{user.username}}/newmeet/" class="btn " role="button">Create a new meet</a>
-        </div>
+      </div>
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">My Favourite Cooks</h4>

@@ -213,7 +213,7 @@ def meetinvite(request, User_username, Meets_name):
     userandscore = list(zip(scores, givenusers))
     userandscore.sort(reverse=True)
 
-    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore})
+    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all()})
 
 
 @login_required()
