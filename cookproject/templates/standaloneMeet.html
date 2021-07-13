@@ -13,9 +13,12 @@
             
             <h4>
                 Participants: {{meet.participating}} /{{meet.maximumparticipants}}
-                {% if meet.participating < meet.maximumparticipants%}
-                    <a href="invite" class="btn btn-info" role="button">Invite People</a>
+                {% if request.user == meet.user %}
+                    {% if meet.participating < meet.maximumparticipants%}
+                        <a href="invite" class="btn btn-info" role="button">Invite People</a>
+                    {% endif %}
                 {% endif %}
+                
             </h4>
 
             {% for participant in meet.participants.all %}

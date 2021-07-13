@@ -212,7 +212,6 @@ def meetinvite(request, User_username, Meets_name):
         scores.append(score)
     userandscore = list(zip(scores, givenusers))
     userandscore.sort(reverse=True)
-
     return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all()})
 
 
