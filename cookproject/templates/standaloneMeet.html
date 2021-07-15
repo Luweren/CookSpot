@@ -31,7 +31,6 @@
                 <div class="modal-body">
                   <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">  {% csrf_token %}
                     <div class="form-group">
-                        <label for="invited">Example multiple select</label>
                         <select multiple class="form-control" id="invited" name="invited">
                           {% for user in all_users %}
                             <option>{{user.username}}</option>
