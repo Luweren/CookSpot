@@ -212,6 +212,10 @@ def meetinvite(request, User_username, Meets_name):
         scores.append(score)
     userandscore = list(zip(scores, givenusers))
     userandscore.sort(reverse=True)
+    if request.method == "POST":
+        searched = request.POST['searched']
+        users = User.objects.filter(username__contains=searched)
+        return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all(), 'searched': searched, 'searched_users': users})
     return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all()})
 
 
