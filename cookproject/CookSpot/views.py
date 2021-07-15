@@ -216,7 +216,7 @@ def meetinvite(request, User_username, Meets_name):
         searched = request.POST['searched']
         users = User.objects.filter(username__contains=searched)
         return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all(), 'searched': searched, 'searched_users': users})
-    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all()})
+    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all().exclude(username = owner.username)})
 
 
 @login_required()
