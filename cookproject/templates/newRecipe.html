@@ -6,6 +6,11 @@
       font-size: 20px;
     }
     h2, label{font-family: 'Barlow Condensed', sans-serif;}
+    th {
+      color: white;
+      font-size: 20px;
+      
+    }
   </style>
 {% endblock css %}
 {% block title %} New recipe {% endblock%}
@@ -55,8 +60,9 @@
     <input type="url" alt="here goes picture" placeholder="Enter the URL of the image" class="form-control" id="inputAddress5" name="image" pattern="https://.*">
   </div>
 
-  How many ingredients do you need?
+  
   <div class="input-group mb-3">
+    <label for="ingredientsNumber">How many ingredients do you need?</label>
     <input type="number" class="form-control" id="ingredientsNumber">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" onclick="ingredients()">Add the ingredients</button>
