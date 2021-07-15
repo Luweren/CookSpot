@@ -9,7 +9,10 @@
       font-size: 25px;
       color: white;
     }
-
+    li, span, #meets a {
+      color: #F1B24A !important;
+      font-size: 20px;
+    }
     a {
       color: #9DC88D;
     }
@@ -20,25 +23,28 @@
 <div class="container-fluid ">
   <div class="row py-2">
     <!-- Meets -->
-    <div class="col-sm-12 col-md-4 ">
-      <div class="row">
-        <h3>M-eats in the next 5 days!</h3>
+    <div class="col-sm-12 col-md-4 " >
+      <div id="meets">
+        <div class="row">
+          <h3>M-eats in the next 5 days!</h3>
+        </div>
+        {% if meets|length == 0 %} 
+          <p>There are no m-eats organized in the next 5 days! Why don't you organize a m-eat?</p>
+        {% else %}
+          {% for meet in meets %}
+            {% if user.is_authenticated %}
+              <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> at <a href="/{{meet.user}}/myprofile">{{meet.user}}'s</a>
+                <span style="float:right;"> {{meet.date}} </span>
+              </li>
+            {% else %}
+              <li class="list-group-item"><a href="/accounts/login">{{meet.name}}</a> at <a href="/accounts/login">{{meet.user}}'s</a>
+                <span style="float:right;"> {{meet.date}} </span>
+              </li>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
       </div>
-      {% if meets|length == 0 %} 
-        <p>There are no m-eats organized in the next 5 days! Why don't you organize a m-eat?</p>
-      {% else %}
-        {% for meet in meets %}
-          {% if user.is_authenticated %}
-            <li class="list-group-item"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> at <a href="/{{meet.user}}/myprofile">{{meet.user}}'s</a>
-              <span style="float:right;"> {{meet.date}} </span>
-            </li>
-          {% else %}
-            <li class="list-group-item"><a href="/accounts/login">{{meet.name}}</a> at <a href="/accounts/login">{{meet.user}}'s</a>
-              <span style="float:right;"> {{meet.date}} </span>
-            </li>
-          {% endif %}
-       {% endfor %}
-      {% endif %}
+      
       
       {% if user.is_authenticated %}
       <a id="meetButton" class="btn btn-link" href="/{{user.username}}/newmeet">Organize your own meet!</a></p>
