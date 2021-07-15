@@ -11,9 +11,19 @@
     color: black !important;
     font-size: 20px;
   }
+  label {
+    color: white;
+    font-size: 20px;
+  }
 </style>
 {% endblock %}
 {% block title %} Invite Users {% endblock%}
+{% block search %}
+<form  class="form-inline my-2 my-lg-0" class="text-right" method="POST" action="{% url 'web:meetinvite' meet.user meet.name %}" id="searchbar" > {% csrf_token %}
+  <input class="form-control mr-sm-2" type="search" placeholder="Search for a specific user" aria-label="Search" name="searched">
+  <button class="btn btn-outline-link my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Search</button>
+</form>
+{% endblock %}
 {% block content %}
 <h3>Invite Users/Friends!</h3>
 <form action="{% url 'web:rate_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
@@ -22,10 +32,25 @@
   <input name="cuser" value="{{request.user}}" hidden/>
   <div class="row"> <!-- picture of recipe and details -->
     <div class="col">
-      <h3>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h3>
+      <h3><a href="{% url 'web:meet' meet.user meet.name %}">{{meet.name}}</a> - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h3>
     </div>
   </div>
   <div class="row">
+  {% if searched %}
+    <div class="col-sm-12 col-md-4 ">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">User that you searched:</h4>
+        </div>
+        {% for search in searched_users %}
+          <li class="list-group-item" style="color: black !important;"><a>{{search.username}} </a>
+          <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+          </li>
+        {% endfor %}
+             
+      </div>
+    </div>
+  {% else %}
     <div class="col-sm-12 col-md-4 ">
       <div class="card">
         <div class="card-body">
@@ -62,7 +87,16 @@
         {% endfor %}        
       </div>
     </div>
+  {% endif %}
+  
+    
+    
   </div>
   
 </form>
+{% if searched %}
+<form  class="form-inline my-2 my-lg-0" class="text-right" action="{% url 'web:meetinvite' meet.user meet.name %}" id="goback" >
+  <button class="btn btn-outline-link my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Go back</button>
+</form>   
+{% endif %}
 {% endblock %}
