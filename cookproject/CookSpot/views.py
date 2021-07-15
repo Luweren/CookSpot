@@ -175,8 +175,14 @@ def meets(request):
 def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
+    meet.participants.add(user)
     ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
-    all_users = User.objects.all()
+    all_users = User.objects.all().exclude(username = user.username)
+    
+    if request.method == "POST":
+        invited = User.objects.get(username=request.POST['invited'])
+        meet.participants.add(invited)
+    
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
                       {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})

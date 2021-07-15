@@ -26,7 +26,7 @@
 {% endblock %}
 {% block content %}
 <h3>Invite Users/Friends!</h3>
-<form action="{% url 'web:rate_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+<form id="myForm" action="{% url 'web:meet' meet.user meet.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <input name="target" value="{{target}}" hidden/>
   <input name="meet" value="{{meet}}" hidden/>
   <input name="cuser" value="{{request.user}}" hidden/>
@@ -63,7 +63,7 @@
         </div>
         {% if givenscores|length > 0 %}
           {% for rateduser in givenscores %}
-            <li class="list-group-item" style="color: black !important;"><a>{{rateduser}} </a>
+            <li class="list-group-item" onclick="myForm.submit('invited');" style="color: black !important;"><a>{{rateduser}} </a>
             <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
             </li>
           {% endfor %}
