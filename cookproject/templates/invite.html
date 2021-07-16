@@ -64,8 +64,8 @@
         {% if givenscores|length > 0 %}
           {% for rateduser in givenscores %}
           <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">{% csrf_token %}
-            <input name="invited" value="{{rateduser}}" hidden/> 
-            <li class="list-group-item" style="color: black !important;"><a>{{rateduser}} </a>
+            <input name="invited" value="{{rateduser.1}}" hidden/> 
+            <li class="list-group-item" style="color: black !important;"><a>{{rateduser.1 }}, score {{rateduser.0}} </a>
               <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
             </li>
           </form>
