@@ -15,11 +15,13 @@
                 Participants: {{meet.participating}} /{{meet.maximumparticipants}}
                 {% if request.user == meet.user %}
                     {% if meet.participating < meet.maximumparticipants%}
-                        <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Invite People</button>
+                        <!-- <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Invite People</button> -->
+                        <a href="{% url 'web:meetinvite' meet.user meet.name %}">Invite people</a>
                     {% endif %}
                 {% endif %}
                 <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <!--
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -28,6 +30,10 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <form  class="form-inline my-2 my-lg-0" class="text-right" method="POST" action="{% url 'web:meetinvite' meet.user meet.name %}" id="searchbar" > {% csrf_token %}
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search for a specific user" aria-label="Search" name="searched">
+                    <button class="btn btn-outline-link my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Search</button>
+                  </form>
                 <div class="modal-body">
                   <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">  {% csrf_token %}
                     <div class="form-group">
@@ -43,6 +49,8 @@
               </div>
             </div>
           </div>
+                -->
+          
             </h4>
 
             {% for participant in meet.participants.all %}

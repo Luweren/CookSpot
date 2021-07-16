@@ -26,16 +26,12 @@
 {% endblock %}
 {% block content %}
 <h3>Invite Users/Friends!</h3>
-<form id="myForm" action="{% url 'web:meet' meet.user meet.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <input name="target" value="{{target}}" hidden/>
-  <input name="meet" value="{{meet}}" hidden/>
-  <input name="cuser" value="{{request.user}}" hidden/>
-  <div class="row"> <!-- picture of recipe and details -->
-    <div class="col">
-      <h3><a href="{% url 'web:meet' meet.user meet.name %}">{{meet.name}}</a> - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h3>
-    </div>
+<div class="row"> <!-- picture of recipe and details -->
+  <div class="col">
+    <h3><a href="{% url 'web:meet' meet.user meet.name %}">{{meet.name}}</a> - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h3>
   </div>
-  <div class="row">
+</div>
+<div class="row">
   {% if searched %}
     <div class="col-sm-12 col-md-4 ">
       <div class="card">
@@ -43,9 +39,13 @@
           <h4 class="card-title">User that you searched:</h4>
         </div>
         {% for search in searched_users %}
+        <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">{% csrf_token %}
+          <input name="invited" value="{{search.username}}" hidden/> 
           <li class="list-group-item" style="color: black !important;"><a>{{search.username}} </a>
-          <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+            <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
           </li>
+        </form>
+          
         {% endfor %}
              
       </div>
@@ -63,9 +63,12 @@
         </div>
         {% if givenscores|length > 0 %}
           {% for rateduser in givenscores %}
-            <li class="list-group-item" onclick="myForm.submit('invited');" style="color: black !important;"><a>{{rateduser}} </a>
-            <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+          <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">{% csrf_token %}
+            <input name="invited" value="{{rateduser}}" hidden/> 
+            <li class="list-group-item" style="color: black !important;"><a>{{rateduser}} </a>
+              <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
             </li>
+          </form>
           {% endfor %}
           
         {% else %}
@@ -81,9 +84,12 @@
           <h4 class="card-title">All Users from CookSpot:</h4>
         </div>
         {% for user in allusers%}
+        <form method="POST" action="{% url 'web:meet' meet.user meet.name %}">{% csrf_token %}
+          <input name="invited" value="{{user.username}}" hidden/> 
           <li class="list-group-item" style="color: black !important;"><a>{{user.username}} </a>
-          <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
+            <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
           </li>
+        </form>
         {% endfor %}        
       </div>
     </div>
@@ -92,8 +98,14 @@
     
     
   </div>
-  
+  <!-- 
+    <form id="myForm" action="{% url 'web:meet' meet.user meet.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <input name="target" value="{{target}}" hidden/>
+  <input name="meet" value="{{meet}}" hidden/>
+  <input name="cuser" value="{{request.user}}" hidden/>
 </form>
+  -->
+
 {% if searched %}
 <form  class="form-inline my-2 my-lg-0" class="text-right" action="{% url 'web:meetinvite' meet.user meet.name %}" id="goback" >
   <button class="btn btn-outline-link my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Go back</button>
