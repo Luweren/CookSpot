@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-_m42&$t3hm0bg*h@8y0yrm9=vwe(i=i!z&m!#v!^3*-rn@9vvx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'cookspot-319820.ew.r.appspot.com'
+]
 
 
 # Application definition
@@ -79,11 +81,13 @@ WSGI_APPLICATION = 'cookproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'online',
-        'USER' : 'matsam',
-        'PASSWORD' : 'my_db@123',
-        'HOST' : 'localhost',
-        'PORT' : '5435',
+        'NAME': 'cookspot_db',
+        'USER' : 'chef',
+        'PASSWORD' : 'joklar123',
+        'HOST' : "{}/{}".format(
+                "/cloudsql",  # e.g. "/cloudsql"
+                "cookspot-319820:europe-west1:cookspot"),  # i.e "<PROJECT-NAME>:<INSTANCE-REGION>:<INSTANCE-NAME>"",
+        'PORT' : '5432',
     }
 }
 
@@ -125,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
