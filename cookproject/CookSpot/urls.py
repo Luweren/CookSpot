@@ -32,5 +32,8 @@ urlpatterns = [
     path('<id>/delete', delete_view, name='delete_fav'),
     path("recipe_delete/<int:rec_id>", recipe_delete, name='recipe_delete'),
     path("editRecipe/<str:Recipe_name>", views.edit_recipe, name='edit_recipe'),
-    path("editRecipe/<str:Recipe_name>/post",views.edit_recipe_post, name='edit_recipe_post')
+    path("editRecipe/<str:Recipe_name>/post",views.edit_recipe_post, name='edit_recipe_post'),
+    path("meet_delete/<int:meet_id>", views.meet_delete, name='meet_delete'),
+    path("editMeet/<str:Meet_name>", views.edit_meet, name='edit_meet'),
+    path("editMeet/<str:Meet_name>/post",views.edit_meet_post, name='edit_meet_post'),
 ]

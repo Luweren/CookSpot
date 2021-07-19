@@ -165,6 +165,13 @@ def recipe_delete(request, rec_id):
     return render(request, "userrecipes.html", context={'user': request.user})
 
 @login_required()
+def meet_delete(request, meet_id):
+    meet = Meets.objects.get(id = meet_id)
+    obj = get_object_or_404(Meets, id=meet_id)
+    obj.delete()
+    return render(request, "meets.html", context={'meets': Meets.objects.all()})
+
+@login_required()
 def meets(request):
     meets = Meets.objects.all()
     if request.method == "POST":
@@ -351,3 +358,24 @@ def edit_recipe_post(request, Recipe_name):
         recipe.save()
         return render(request, "recipe.html", {'recipe': recipe})
     return render(request, "recipe.html", {'recipe': recipe})
+
+@login_required()
+def edit_meet(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    return render(request, "editMeet.html", {'meet': meet})
+
+@login_required()
+def edit_meet_post(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    if request.method == "POST":
+        if (request.POST['meetName']):
+            meet.name = request.POST['meetName']
+        if (request.POST['meetDate']):
+            meet.date = request.POST['meetDate']
+        if (request.POST['description']):
+            meet.desc = request.POST['description']
+        if (request.POST['pnumber']):
+            meet.maximumparticipants = request.POST['pnumber']
+        meet.save()
+        return render(request, "meets.html", {'meets': Meets.objects.all()})
+    return render(request, "meets.html", {'meets': Meets.objects.all()})
