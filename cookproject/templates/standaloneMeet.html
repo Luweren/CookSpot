@@ -85,6 +85,8 @@
                     <h4><a href="/{{participant.username}}/myprofile">{{participant.username}}</a> -
                         {% if request.user in meet.participants.all%}
                         <a href="rate/{{participant.username}}" class="btn btn-info" role="button">Rate for this M-eat</a>
+                        <a href="{% url 'web:uninvite' meet.name participant.username %}" class="btn btn-info" role="button">Uninvite</a>
+
                         {% endif %}
                     </h4>
                 {% else %}

@@ -101,15 +101,14 @@ def newrecipe_post(request):
             return redirect("/" + "homepage")
         except (rec.DoesNotExist):
             recipe = user1.recipe_set.create(name=request.POST['recipename'], difficulty=request.POST['difficulty'],
-                                             tags=request.POST['tags'], description=request.POST['description'],
-                                             instructions=request.POST['instructions'],
-                                             preparationtime=request.POST['preparationtime'],
-                                             cookingtime=request.POST['cookingtime'], image=request.POST['image'])
+                            tags=request.POST['tags'], description=request.POST['description'],
+                            instructions=request.POST['instructions'],
+                            preparationtime=request.POST['preparationtime'],
+                            cookingtime=request.POST['cookingtime'], image=request.POST['image'])
             for i in range(len(request.POST.getlist('ingredientname[]'))):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
-                                              amount=request.POST.getlist(
-                                                  'ingredientamount[]')[i] +
-                                                     request.POST.getlist('ingredientmeasurement[]')[i])
+                            amount=request.POST.getlist('ingredientamount[]')[i],
+                            measurement=request.POST.getlist('ingredientmeasurement[]')[i])
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
@@ -354,6 +353,7 @@ def edit_recipe_post(request, Recipe_name):
             recipe.image = request.POST['image']
         if (request.POST['instructions']):
             recipe.instructions = request.POST['instructions']
+      
         recipe.save()
         return render(request, "recipe.html", {'recipe': recipe})
     return render(request, "recipe.html", {'recipe': recipe})
@@ -378,3 +378,10 @@ def edit_meet_post(request, Meet_name):
         meet.save()
         return render(request, "meets.html", {'meets': Meets.objects.all()})
     return render(request, "meets.html", {'meets': Meets.objects.all()})
+
+@login_required()
+def uninvite(request, Meets_name, User_username):
+    toUninvite = User.objects.get(username=User_username)
+    meet = Meets.objects.get(name = Meets_name)
+    meet.participants.remove(toUninvite)
+    return render(request, "standaloneMeet.html", {'meet': meet})

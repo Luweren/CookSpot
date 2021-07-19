@@ -36,4 +36,5 @@ urlpatterns = [
     path("meet_delete/<int:meet_id>", views.meet_delete, name='meet_delete'),
     path("editMeet/<str:Meet_name>", views.edit_meet, name='edit_meet'),
     path("editMeet/<str:Meet_name>/post",views.edit_meet_post, name='edit_meet_post'),
+    path("<str:Meets_name>/uninvite/<str:User_username>", views.uninvite, name='uninvite'),
 ]
