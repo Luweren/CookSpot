@@ -5,14 +5,44 @@
         font-size: 1.2em;
         font-family: 'Quicksand', sans-serif;
     }
+    
   </style>
 {% endblock css %}
 {% block title %} {{recipe.name}} {% endblock%}
 {% block content %}
 <div class="row ">
     <!-- Image & description -->
-    <div class="col-md-4 cols-12 offset-md-1">
-        <h2>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h2>
+    <div class="col cols-12 offset-md-1">
+        <div class="row">
+                <h2>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h2>
+                {% if recipe.user == request.user %}
+                    <button type="button" class="fa fa-trash" style="font-size:24px; position: relative; margin:10px;
+                     background-color: none;" data-toggle="modal" data-target="#deleteModal"></button>
+                    <!-- Modal -->
+                    <div class="modal"  id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModal"> Are you sure that you want to delete your recipe {{recipe.name}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                Deleting this recipe will also delete it from any meets and favorite recipes of other users.
+                            </div>
+                            <div class="modal-footer">
+                            <a href="{% url 'web:recipe_delete' recipe.id  %}"  class="btn">Yes, delete</a>
+                            <a href="{% url 'web:recipe' recipe.user recipe.name  %}" type="button" class="btn">No, go back</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <a ><div ></div></a>
+                {% endif %}
+
+        </div>
+        
         <h4 style="color: white;">{{recipe.description}}</h4>
         <div style="padding: 10px;">
             <figure >

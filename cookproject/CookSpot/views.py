@@ -157,7 +157,12 @@ def delete_view(request, id):
     obj.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-
+@login_required()
+def recipe_delete(request, rec_id):
+    recipe = Recipe.objects.get(id = rec_id)
+    obj = get_object_or_404(Recipe, id=rec_id)
+    obj.delete()
+    return render(request, "userrecipes.html", context={'user': request.user})
 
 @login_required()
 def meets(request):

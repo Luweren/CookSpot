@@ -86,7 +86,7 @@ class Meets(models.Model):
 class UserRating(models.Model):
     fromuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='givenratings')
     touser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gottenratings')
-    meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.PROTECT)
+    meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.CASCADE)
     rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):

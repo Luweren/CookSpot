@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import delete_view
+from .views import delete_view, recipe_delete
 
 app_name = 'web'
 urlpatterns = [
@@ -30,4 +30,5 @@ urlpatterns = [
     path('editUserDetails', views.editUserDetails, name="editUserDetails"),
     path("<int:id>/addtofav/<str:ur>", views.add_to_fav, name="addtofav"),
     path('<id>/delete', delete_view, name='delete_fav'),
+    path("recipe_delete/<int:rec_id>", recipe_delete, name='recipe_delete')
 ]
