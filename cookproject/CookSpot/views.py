@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, request
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
+from django.http import QueryDict
 import numpy.random as rand
 import datetime
 from .models import Recipe, Ingredients, Meets, Profile, UserRating, Favourite
@@ -92,6 +93,7 @@ def newrecipe(response, User_username):
 
 @login_required()
 def newrecipe_post(request):
+    
     user2 = User.objects.get(username=request.POST['username'])
     try:
         user1 = user2
@@ -353,8 +355,22 @@ def edit_recipe_post(request, Recipe_name):
             recipe.image = request.POST['image']
         if (request.POST['instructions']):
             recipe.instructions = request.POST['instructions']
-      
+        
+        length = len(request.POST.getlist('ingredientname[]'))
+        for i in range(length):
+            if len(recipe.ingredients_set.all())!=0:
+                recipe.ingredients_set.all()[0].delete()
+        
+
+        for i in range(len(request.POST.getlist('ingredientname[]'))):
+            if request.POST.getlist('ingredientname[]')[i] != '':
+                recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
+                amount=request.POST.getlist('ingredientamount[]')[i],
+                            measurement=request.POST.getlist('ingredientmeasurement[]')[i])
+        
+
         recipe.save()
+
         return render(request, "recipe.html", {'recipe': recipe})
     return render(request, "recipe.html", {'recipe': recipe})
 

@@ -16,17 +16,17 @@
 {% block title %} New recipe {% endblock%}
 {% block content %}
 <h3>Add a new recipe to your profile!</h3>
-<form action="{% url 'web:newrecipe_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+<form action="{% url 'web:newrecipe_post' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <input name="username" value="{{user.username}}" hidden/>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="recipeName">Name</label>
-      <input required type="text" class="form-control" id="recipeName" placeholder="Name" name="recipename">
+      <input required type="text" class="form-control" id="recipeName" placeholder="Name" name="recipename" value="{{recipe.name}}">
     </div>
     <div class="form-group col-md-6">
       <label for="recipeLevel">Level</label>
-      <select id="recipeLevel" class="form-control" name="difficulty">
-        <option value="none" selected>Choose...</option>
+      <select id="recipeLevel" class="form-control" name="difficulty" >
+        <option value="none" selected value={{recipe.difficulty}}>Choose...</option>
         <option value="None" >Anyone can do it</option>
         <option value="Easy" >Beginner</option>
         <option value="Intermediate" >Intermediate</option>
@@ -37,32 +37,37 @@
   </div>
   <div class="form-group">
     <label for="recipeTags">Tags</label>
-    <input type="text" class="form-control" id="recipeTags" name="tags"
+    <input type="text" class="form-control" id="recipeTags" name="tags" value="{{recipe.tags}}"
       placeholder="Enter your tags separated by commas. Example: 'chocolate, birthday cake, frosting' ">
   </div>
   <div class="form-group">
     <label for="inputAddress2">Description (Optional) </label>
-    <input type="text" class="form-control" id="inputAddress2" name="description"
+    <input type="text" class="form-control" id="inputAddress2" name="description" value="{{recipe.description}}"
       placeholder="Write something about the dish, history etc.">
   </div>
   <div class="form-group">
     <label for="inputAddress3">Preparation Time</label>
-    <input type="text" class="form-control" id="inputAddress3" name="preparationtime"
+    <input type="text" class="form-control" id="inputAddress3" name="preparationtime" value="{{recipe.preparationtime}}"
       placeholder="Preparation Time">
   </div>
   <div class="form-group">
     <label for="inputAddress4">Cooking Time</label>
-    <input type="text" class="form-control" id="inputAddress4" name="cookingtime"
+    <input type="text" class="form-control" id="inputAddress4" name="cookingtime" value="{{recipe.cookingtime}}"
       placeholder="Time Required to Cook">
   </div>
   <div class="form-group">
     <label for="inputAddress5">Image</label>
-    <input type="url" alt="here goes picture" placeholder="Enter the URL of the image" class="form-control" id="inputAddress5" name="image" pattern="https://.*">
+    <input type="url" alt="here goes picture" placeholder="Enter the URL of the image" class="form-control" value="{{recipe.image}}" id="inputAddress5" name="image" pattern="https://.*">
   </div>
 
   
   <div class="input-group mb-3">
-    <label for="ingredientsNumber">How many ingredients do you need?</label>
+    {% if recipe.name %}
+      <label for="ingredientsNumber">How many more ingredients do you need?</label>
+    {% else %}
+      <label for="ingredientsNumber">How many ingredients do you need?</label>
+    {% endif %}
+    
     <input type="number" class="form-control" id="ingredientsNumber">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" onclick="ingredients()">Add the ingredients</button>
@@ -72,7 +77,43 @@
   <div class="form-inline">
     <div class="form-group col-md-6">
       <div id="ingredientsTable">
-
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Amount</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Ingredient</th>
+            </tr>
+          </thead>
+          <tbody id="ingredientsBody">
+              {% for Ingredients in recipe.ingredients_set.all %}
+              <tr>
+                  <td><label for="ingredientAmount"></label>
+                  <input type="text" value="{{Ingredients.amount}}" class="form-control" id="ingredientAmount" name="ingredientamount[]"  placeholder="Amount for 4 People">
+                </td>
+                <td>
+                  <label for="ingredientMeasurement"></label>
+                  <select id="ingredientMeasurement" class="form-control" name="ingredientmeasurement[]" value="{{Ingredients.measurement}}">
+                    <option selected>Choose...</option>
+                    <option value="g">g</option>
+                    <option value="lb">lb</option>
+                    <option value="oz">oz</option>
+                    <option value="p">p</option>
+                    <option value="c">c</option>
+                    <option value="ml">ml</option>
+                    <option value="tsp">tsp</option>
+                    <option value="Tbsp">Tbsp</option>
+        
+                  </select>
+                </td>
+                <td><label for="ingredientName"></label>
+                  <input type="text" class="form-control" id="ingredientName"  name="ingredientname[]" value="{{Ingredients.name}}">
+                </td>
+              </tr>
+              
+              {% endfor %}
+          </tbody>
+        </table>
       </div>
       
 
@@ -80,7 +121,7 @@
   </div>
   <div class="form-group">
     <label for="recipeDirections">Directions</label>
-    <textarea class="form-control" name="instructions" id="recipeDirections" rows="3"></textarea>
+    <textarea class="form-control" name="instructions" id="recipeDirections" rows="3">{{recipe.instructions}}</textarea>
   </div>
   <button type="submit" class="btn btn-primary">Add</button>
 </form>
@@ -88,17 +129,6 @@
   function ingredients() {
     var val = document.getElementById("ingredientsNumber").value;
     if(val) {
-      document.getElementById("ingredientsTable").innerHTML=`<table>
-        <thead>
-          <tr>
-            <th scope="col">Amount</th>
-            <th scope="col">Unit</th>
-            <th scope="col">Ingredient</th>
-          </tr>
-        </thead>
-        <tbody id="ingredientsBody">
-        </tbody>
-      </table>`
       for(i=0;i<parseInt(val);i++){
         document.getElementById("ingredientsBody").innerHTML += 
         `<td><label for="ingredientAmount"></label>
@@ -116,14 +146,12 @@
             <option value="ml">ml</option>
             <option value="tsp">tsp</option>
             <option value="Tbsp">Tbsp</option>
-
           </select>
         </td>
         <td><label for="ingredientName"></label>
           <input type="text" class="form-control" id="ingredientName"  name="ingredientname[]">
         </td>`
       }
-            
     }
 } 
 </script>

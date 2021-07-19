@@ -4,7 +4,7 @@ from .views import delete_view, recipe_delete
 
 app_name = 'web'
 urlpatterns = [
-    path("users/", views.users, name="users"),
+       path("users/", views.users, name="users"),
     path("allrecipes/", views.allrecipes, name="allrecipes"),
     path("", views.homepage, name="home"),
     path("homepage/", views.homepage, name="home"),
