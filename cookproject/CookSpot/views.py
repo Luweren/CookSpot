@@ -179,7 +179,6 @@ def meets(request):
         searchedMeats = Meets.objects.filter(name__contains=searched)
         return render(request, "meets.html", {'searched': searched, 'meats': searchedMeats})
     # return render(request, "meets.html", {})
-
     return render(request, "meets.html", context={'meets': meets})
 
 
