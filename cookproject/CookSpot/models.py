@@ -53,7 +53,6 @@ class Recipe(models.Model):
     preparationtime = models.CharField(max_length=254)
     cookingtime = models.CharField(max_length=254)
     instructions = models.TextField()
-
     def __str__(self):
         return self.name
 

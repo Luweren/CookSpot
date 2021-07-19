@@ -30,5 +30,7 @@ urlpatterns = [
     path('editUserDetails', views.editUserDetails, name="editUserDetails"),
     path("<int:id>/addtofav/<str:ur>", views.add_to_fav, name="addtofav"),
     path('<id>/delete', delete_view, name='delete_fav'),
-    path("recipe_delete/<int:rec_id>", recipe_delete, name='recipe_delete')
+    path("recipe_delete/<int:rec_id>", recipe_delete, name='recipe_delete'),
+    path("editRecipe/<str:Recipe_name>", views.edit_recipe, name='edit_recipe'),
+    path("editRecipe/<str:Recipe_name>/post",views.edit_recipe_post, name='edit_recipe_post')
 ]

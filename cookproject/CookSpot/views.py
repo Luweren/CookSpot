@@ -322,3 +322,31 @@ def editUserDetails(request):
         user.save()
         return render(request, "user.html", {'user': user})
     return render(request, "user.html", {'user': user})
+
+@login_required()
+def edit_recipe(request, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    return render(request, "editRecipe.html", {'recipe': recipe})
+@login_required()
+def edit_recipe_post(request, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    if request.method == "POST":
+        if (request.POST['recipename']):
+            recipe.name = request.POST['recipename']
+        if (request.POST['description']):
+            recipe.description = request.POST['description']
+        if (request.POST['tags']):
+            recipe.last_name = request.POST['tags']
+        if (request.POST['difficulty']):
+            recipe.email = request.POST['difficulty']
+        if (request.POST['preparationtime']):
+            recipe.email = request.POST['preparationtime']
+        if (request.POST['cookingtime']):
+            recipe.email = request.POST['cookingtime']
+        if (request.POST['image']):
+            recipe.image = request.POST['image']
+        if (request.POST['instructions']):
+            recipe.instructions = request.POST['instructions']
+        recipe.save()
+        return render(request, "recipe.html", {'recipe': recipe})
+    return render(request, "recipe.html", {'recipe': recipe})
