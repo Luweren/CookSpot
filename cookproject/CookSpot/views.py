@@ -108,8 +108,8 @@ def newrecipe_post(request):
             for i in range(len(request.POST.getlist('ingredientname[]'))):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
                                               amount=request.POST.getlist(
-                                                  'ingredientamount[]')[i] +
-                                              request.POST.getlist('ingredientmeasurement[]')[i])
+                                                  'ingredientamount[]')[i],
+                                              measurement = measurement=request.POST.getlist('ingredientmeasurement[]')[i])
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
@@ -160,6 +160,20 @@ def delete_view(request, id):
 
 
 @login_required()
+def recipe_delete(request, rec_id):
+    recipe = Recipe.objects.get(id = rec_id)
+    obj = get_object_or_404(Recipe, id=rec_id)
+    obj.delete()
+    return render(request, "userrecipes.html", context={'user': request.user})
+
+@login_required()
+def meet_delete(request, meet_id):
+    meet = Meets.objects.get(id = meet_id)
+    obj = get_object_or_404(Meets, id=meet_id)
+    obj.delete()
+    return render(request, "meets.html", context={'meets': Meets.objects.all()})
+
+@login_required()
 def meets(request):
     meets = Meets.objects.all()
     if request.method == "POST":
@@ -175,9 +189,13 @@ def meets(request):
 def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
+    meet.participants.add(user)
     ingredients = Ingredients.objects.filter(
         recipe=meet.recipe).order_by("name")
     all_users = User.objects.all()
+    if request.method == "POST":
+        invited = User.objects.get(username=request.POST['invited'])
+        meet.participants.add(invited)
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
                       {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})
@@ -213,9 +231,11 @@ def meetinvite(request, User_username, Meets_name):
         scores.append(score)
     userandscore = list(zip(scores, givenusers))
     userandscore.sort(reverse=True)
-
-    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore})
-
+    if request.method == "POST":
+        searched = request.POST['searched']
+        users = User.objects.filter(username__contains=searched)
+        return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all(), 'searched': searched, 'searched_users': users})
+    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all().exclude(username = owner.username)})
 
 @login_required()
 def meetrate(request, User_username, Meets_name, Target_username):
@@ -310,3 +330,75 @@ def editUserDetails(request):
         user.save()
         return render(request, "user.html", {'user': user})
     return render(request, "user.html", {'user': user})
+
+@login_required()
+def edit_recipe(request, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    return render(request, "editRecipe.html", {'recipe': recipe})
+
+@login_required()
+def edit_recipe_post(request, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    if request.method == "POST":
+        if (request.POST['recipename']):
+            recipe.name = request.POST['recipename']
+        if (request.POST['description']):
+            recipe.description = request.POST['description']
+        if (request.POST['tags']):
+            recipe.tags = request.POST['tags']
+        if (request.POST['difficulty']):
+            recipe.difficulty = request.POST['difficulty']
+        if (request.POST['preparationtime']):
+            recipe.preparationtime = request.POST['preparationtime']
+        if (request.POST['cookingtime']):
+            recipe.cookingtime = request.POST['cookingtime']
+        if (request.POST['image']):
+            recipe.image = request.POST['image']
+        if (request.POST['instructions']):
+            recipe.instructions = request.POST['instructions']
+        
+        length = len(request.POST.getlist('ingredientname[]'))
+        for i in range(length):
+            if len(recipe.ingredients_set.all())!=0:
+                recipe.ingredients_set.all()[0].delete()
+        
+
+        for i in range(len(request.POST.getlist('ingredientname[]'))):
+            if request.POST.getlist('ingredientname[]')[i] != '':
+                recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
+                amount=request.POST.getlist('ingredientamount[]')[i],
+                            measurement=request.POST.getlist('ingredientmeasurement[]')[i])
+        
+
+        recipe.save()
+
+        return render(request, "recipe.html", {'recipe': recipe})
+    return render(request, "recipe.html", {'recipe': recipe})
+
+@login_required()
+def edit_meet(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    return render(request, "editMeet.html", {'meet': meet})
+
+@login_required()
+def edit_meet_post(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    if request.method == "POST":
+        if (request.POST['meetName']):
+            meet.name = request.POST['meetName']
+        if (request.POST['meetDate']):
+            meet.date = request.POST['meetDate']
+        if (request.POST['description']):
+            meet.desc = request.POST['description']
+        if (request.POST['pnumber']):
+            meet.maximumparticipants = request.POST['pnumber']
+        meet.save()
+        return render(request, "meets.html", {'meets': Meets.objects.all()})
+    return render(request, "meets.html", {'meets': Meets.objects.all()})
+
+@login_required()
+def uninvite(request, Meets_name, User_username):
+    toUninvite = User.objects.get(username=User_username)
+    meet = Meets.objects.get(name = Meets_name)
+    meet.participants.remove(toUninvite)
+    return render(request, "standaloneMeet.html", {'meet': meet})
