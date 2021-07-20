@@ -1,95 +1,121 @@
 {% extends "index.html" %}
+{% block css %}
+    <style>
+        p{font-size: 20px;}
+    </style>
+{% endblock %}
 {% block title %} {{meet.name}} {% endblock%}
 {% block content %}
 <div class="card">
-    <!-- picture of recipe and details -->
-    <div class="col-md-4 cols-12 centered">
-        <div class="card-body">
-            <h4>
-                <class="card-title">{{meet.name}} - Organized by <a
-                        href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a>
-            </h4>
-            <h5>What are we making? <a href="{% url 'web:recipe' meet.user meet.recipe%}">{{meet.recipe}}</a> </h5>
-            <h5>Participants: {{meet.participating}} /{{meet.maximumparticipants}}
-                {% if meet.participating < meet.maximumparticipants%}
-                <a href="invite" class="btn btn-info" role="button">Invite People</a>
-                {% endif %}
-            </h5>
-            {% for participant in meet.participants.all %}
-            {% if participant != request.user%}
-            <h5><a href="/{{participant.username}}/myprofile">{{participant.username}}</a> -
-                {% if request.user in meet.participants.all%}
-                <a href="rate/{{participant.username}}" class="btn btn-info" role="button">Rate for this M-eat</a>
-                {% endif %}
-            </h5>
+    <div class="row">
+        <div class="col-md-4 cols-12 offset-md-1">
+            <div class="row">
+                <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{meet.user}}</a> </h4>
+                {% if meet.user == request.user %}
+                <button type="button" class="fa fa-trash" style="font-size:24px; position: relative; margin:10px;
+                 background-color: none;" data-toggle="modal" data-target="#deleteModal"></button>
+                <!-- Modal -->
+                <div class="modal"  id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModal"> Are you sure that you want to delete your meet {{meet.name}}?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-footer">
+                        <a href="{% url 'web:meet_delete' meet.id %}"  class="btn">Yes, delete</a>
+                        <a href="{% url 'web:meet' meet.user meet.name %}" type="button" class="btn">No, go back</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <a href="{% url 'web:edit_meet' meet.name %}" type="button">
+                    <i class="fa fa-pencil" style="font-size:24px; position: relative; margin:10px; background-color:white"></i>
+                </a>
             {% endif %}
-            {% endfor %}
-            {% if request.user not in meet.participants.all and meet.participating < meet.maximumparticipants%}
-            <div class="input-group-append">
-                <a href="join" class="btn btn-info" role="button">Join M-eat</a>
             </div>
+            
+            <h4>What are we making? <a href="{% url 'web:recipe' meet.user meet.recipe%}">{{meet.recipe}}</a> </h4>
+            <h4>
+                Participants: {{meet.participating}} /{{meet.maximumparticipants}}
+                {% if request.user == meet.user %}
+                    {% if meet.participating < meet.maximumparticipants%}
+                        <!-- <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Invite People</button> -->
+                        <a href="{% url 'web:meetinvite' meet.user meet.name %}">Invite people</a>
+                    {% endif %}
+                {% endif %}
+            </h4>
+            {% for participant in meet.participants.all %}
+                {% if participant != request.user%}
+                    <h4><a href="/{{participant.username}}/myprofile">{{participant.username}}</a> -
+                        {% if request.user in meet.participants.all%}
+                        <a href="rate/{{participant.username}}" class="btn btn-info" role="button">Rate for this M-eat</a>
+                        <a href="{% url 'web:uninvite' meet.name participant.username %}" class="btn btn-info" role="button">Uninvite</a>
+
+                        {% endif %}
+                    </h4>
+                {% else %}
+                    {% if request.user in meet.participants.all %}
+                        <h4><a href="/{{participant.username}}/myprofile">{{participant.username}}</a></h4>
+                    {% endif %}
+                {% endif %} 
+            {% endfor %}
+
+            {% if request.user not in meet.participants.all and meet.participating < meet.maximumparticipants%}
+                <div class="input-group-append">
+                    <a href="join" class="btn btn-info" role="button">Join M-eat</a>
+                </div>
             {% endif %}
+
             {% if not meet.participating < meet.maximumparticipants %}
-            <h5> FULL </h5>
+            <h4> FULL </h4>
             {% endif %}
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4 cols-12 offset-md-1">
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <h5 class="card-title">Who Brings What?</h5>
-
+    </div><!-- picture of recipe and details -->
+    <div class="row">
+        <div class="col-md-4 cols-12 offset-md-1">
+            <div class="card">
+                <div class="card-body">
+                    <p>Who's bringing what?</p>  
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th scope="col">Person</th>
-                                <th scope="col">Ingredient</th>
-                            </tr>
+                          <tr>
+                            <th scope="col">Person</th>
+                            <th scope="col">Ingredient</th>
+                          </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size: 1.1em;">
                             {% for ingredient in ingredients %}
-                            <tr>
                                 <td>
                                     <label for="chooseUser"></label>
                                     <select id="chooseUser" class="form-control" name="chooseUser">
                                         <option selected>Choose a user</option>
-                                        {% for user in meet.participants.all %}
-                                        <option value="{{user}}">{{user}}</option>
-                                        {% endfor %}
+                                            {% for user in meet.participants.all %} 
+                                        <option value="{{user}}" selected>{{user}}</option>
+                                            {% endfor %}
                                     </select>
                                 </td>
-                                <td> {{ingredient}} {{ingredient.amount}} </td>
-                            </tr>
+                                <td> {{ingredient}} {{ingredient.amount}} </td></tr>
                             {% endfor %}
                         </tbody>
-                    </table>
-                </ul>
+                    </table>   
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 cols-12 offset-md-1 ">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Details</h5>
-                <img class="card-img-top" {% if meet.recipe.image != ""%} src="{{meet.recipe.image}}" {% else %}
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
-                    {% endif %} height="400" width="200" alt="...">
-                <ul font size="+5" class="list-group list-group-flush">
-                    <li>Date: {{meet.date}}</li>
-                    <li>Where? {{meet.location}}</li>
-                    <h5>Meet Description:</h5>
-                    <li>{{meet.desc}}</li>
-                </ul>
+        <div class="col-md-4 cols-12 offset-md-1 ">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" style="color: black;">Details</h4>                    <img class="card-img-top" {% if meet.recipe.image != ""%} src="{{meet.recipe.image}}" {% else %}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+                        {% endif %} height="400" width="200" alt="...">
+                    <p>Date: {{meet.date}}</p>
+                    <p>Where? {{meet.location}}</p>
+                    <p>Meet Description: {{meet.desc}}</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    function clicked(obj) {
-        //    document.getElementById("dropdownMenuButton").innerHTML = obj;
-    }
-</script>
 {% endblock %}

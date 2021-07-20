@@ -1,4 +1,18 @@
 {% extends "index.html" %}
+{% block css %}
+  <style>
+    label {
+      color: white;
+      font-size: 20px;
+    }
+    h2, label{font-family: 'Barlow Condensed', sans-serif;}
+    th {
+      color: white;
+      font-size: 20px;
+      
+    }
+  </style>
+{% endblock css %}
 {% block title %} New recipe {% endblock%}
 {% block content %}
 <h3>Add a new recipe to your profile!</h3>
@@ -100,7 +114,6 @@
             <option value="ml">ml</option>
             <option value="tsp">tsp</option>
             <option value="Tbsp">Tbsp</option>
-
           </select>
         </td>
         <td><label for="ingredientName"></label>

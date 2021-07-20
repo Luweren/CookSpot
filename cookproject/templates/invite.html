@@ -1,27 +1,135 @@
-{% extends "index.html" %}
-{% block title %} Invite Users {% endblock%}
-{% block content %}
-<h3>Invite Users/Friends!</h3>
-<form action="{% url 'web:rate_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <input name="target" value="{{target}}" hidden/>
-  <input name="meet" value="{{meet}}" hidden/>
-  <input name="cuser" value="{{request.user}}" hidden/>
-  <div class="row"> <!-- picture of recipe and details -->
-        <div class="col">
-            <h4>{{meet.name}} - Organized by <a href="{% url 'web:myprofile' meet.user %}">{{user.username}}</a> </h4>
-        </div>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Bootstrap JavaScript plugin and dependency -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+  <!-- checkbox symbol -->
+  <style>
+    #title {font-family: 'Zen Loop';}
+    body {
+      background-color: #164A41;
+    }
+    .navbar-brand
+    {
+      font-size: 2.5rem;
+    }
+    .navbar-nav {
+      font-size: 1.3rem;
+    }
+    .btn {
+      background-color: #9DC88D !important;
+      color: black !important;
+    }
+    
+    h1, h2, h3, h4, a {
+      color: #9DC88D;
+      font-family: 'Quicksand', sans-serif;
+    }
+    li > a {
+      color:white !important;
+    }
+  </style>
+  {% block css %} {% endblock css %}
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9DC88D;">
+    <a class="navbar-brand" href="/homepage" id="title" style="color:white !important;">CookSpot</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{user.username}}/mycookgraphy">My Cookgraphy </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/{{user.username}}/newmeet">Let's cook</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/accounts/login">My Cookgraphy </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/accounts/login">Let's cook</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/users">Cooks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/allrecipes">Recipes</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="/meets">M-eats</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/accounts/login">M-eats </a>
+        </li>
+        {% endif %}
+      </ul>
+
     </div>
-  <div class="col-sm-12 col-md-4 ">
-      <div class="card">
-          <div class="card-body">
-              <h5 class="card-title">Recommended Users:</h5>
-            </div>
-          {% for rateduser in givenscores %}
-              <li class="list-group-item"><a>{{rateduser}} </a>
-              <button type="submit" style="float:right" class="btn btn-primary"> Invite</button>
-              </li>
-            {% endfor %}
-        </div>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      {% block search %}
+      <form class="form-inline" class="text-right" method="POST" action="{% url 'web:search-things' %}" id="searchbar">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Search</button>
+      </form>
+      {% endblock %}
+
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <!--TODO-->
+          <a class="nav-link" href="/{{request.user.username}}/myprofile">My Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout'%}">Sign Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'web:login'%}">Sign In</a>
+        </li>
+        {% endif %}
+      </ul>
+
+    </div>
+  </nav>
+  <div class="container-fluid">
+    {% block content %}{% endblock %}
   </div>
-</form>
-{% endblock %}
+
+  {% block js %}{% endblock %}
+        
+</body>
+
+</html>
