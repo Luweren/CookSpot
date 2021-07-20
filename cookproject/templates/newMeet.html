@@ -1,20 +1,29 @@
 {% extends "index.html" %}
+{% block css %}
+  <style>
+    label {
+      color: white;
+      font-size: 20px;
+    }
+    h2, label{font-family: 'Barlow Condensed', sans-serif;}
+  </style>
+{% endblock css %}
 {% block title %} New meet {% endblock%}
 {% block content %}
-<h3>Create a new meet!</h3>
+<h1>Create a new meet!</h1>
 <form action="{% url 'web:newmeet_post'%}" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <input name="username" value="{{user.username}}" hidden />
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="meetName">Name</label>
-      <input required type="text" class="form-control" id="meetName" placeholder="Name" name="meetName">
+      <input required type="text" class="form-control" id="meetName" placeholder="Enter a name for your m-eat" name="meetName">
     </div>
     <div class="form-group col-md-6">
       <label for="recipe">What are you cooking?</label>
       <select id="recipe" class="form-control" name="recipe">
         <option value="none" selected>Choose...</option>
         {% for recipe in user.recipe_set.all %}
-        <option value="{{recipe.name}}">{{recipe.name}}</option>
+          <option value="{{recipe.name}}">{{recipe.name}}</option>
         {% endfor %}
       </select>
     </div>
