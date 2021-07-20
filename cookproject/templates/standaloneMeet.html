@@ -128,7 +128,7 @@
                                     <select id="chooseUser" class="form-control" name="chooseUser">
                                         <option selected>Choose a user</option>
                                             {% for user in meet.participants.all %} 
-                                        <option value="{{user}}">{{user}}</option>
+                                        <option value="{{user}}" selected>{{user}}</option>
                                             {% endfor %}
                                     </select>
                                 </td>
@@ -150,4 +150,46 @@
              
         </div>
     </div>
+
+    <script type="text/javascript">
+        /*window.onload = function() {
+            var selItem = sessionStorage.getItem("SelItem");  
+            $('#chooseUser').val(selItem);
+        }
+        $('#chooseUser').change(function() { 
+            var selVal = $(this).val();
+            sessionStorage.setItem("SelItem", selVal);
+        });*/
+        
+        /*$('#chooseUser').change(function(event){
+            var selectedcategory = $(this).children("option:selected").val();
+            sessionStorage.setItem("itemName",selectedcategory);
+        });
+        $('select').find('option[value='+sessionStorage.getItem('itemName')+']').attr('selected','selected');*/
+
+        /*document.getElementById('chooseUser').onchange = function() {
+            localStorage.setItem('selectedtem', document.getElementById('chooseUser').value);
+        };
+
+        if (localStorage.getItem('selectedtem')) {
+            document.getElementById('wk_sl_search_select_'+localStorage.getItem('selectedtem')).selected = true;
+        } */
+
+        /*function fnChange(Index){
+            var userName = $("#chooseUser option:chooseUser").val();                                
+            if(!userName){return false;}   
+            document.location.href="testpage.jsp?fn=pChange&userName="+userName;
+        }*/
+
+        /*unction init() {
+            var elem = document.getElementById('button');
+            elem.addEventListener('click', ausgeben);	
+        }
+        
+        function ausgeben() {
+            var x = ingredients[i];
+            var ausgabe = document.getElementById('ausgabe');
+            ausgabe.innerHTML = x;
+        }*/
+    </script>
 {% endblock %}

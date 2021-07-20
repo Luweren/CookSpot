@@ -194,6 +194,9 @@ def meet(request, User_username, Meets_name):
     if request.method == "POST":
         invited = User.objects.get(username=request.POST['invited'])
         meet.participants.add(invited)
+        for i in ingredients:
+            ingredients[i].user = request.REQUEST['user']
+            ingredients[i].save()     
     
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",

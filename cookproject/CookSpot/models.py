@@ -58,6 +58,7 @@ class Recipe(models.Model):
 
 
 class Ingredients(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT, related_name='chosenuser')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
     amount = models.CharField(max_length=254)
