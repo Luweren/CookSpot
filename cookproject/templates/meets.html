@@ -19,15 +19,15 @@
   <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for i in meets %}
     <div class="col-md-4">
-      <div class="card" style="margin: 10px;">
+      <div class="card">
         <div class="card-body">
           <h3 class="card-title"><a href="/{{i.user}}/meet/{{i.name}}/">{{i.name}}</a></h3><br>
           <h5>
             {% if i.maximumparticipants %}
-              Max. {{i.maximumparticipants}} people.<br>
-              {{i.participating}} people have already accepted.
+            Max. {{i.maximumparticipants}} people.<br>
+            {{i.participating}} people have already accepted.
             {% else %}
-              Unlimited amount of people.
+            Unlimited amount of people.
             {% endif %}</h5>
         </div>
       </div>

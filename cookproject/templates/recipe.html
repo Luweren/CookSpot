@@ -1,111 +1,63 @@
 {% extends "index.html" %}
-{% block css %}
-  <style>
-    .card-body  {
-        font-size: 1.2em;
-        font-family: 'Quicksand', sans-serif;
-    }
-    
-  </style>
-{% endblock css %}
 {% block title %} {{recipe.name}} {% endblock%}
 {% block content %}
 <div class="row">
-    <!-- Image & description -->
-    <div class="col cols-12 offset-md-1">
-        <div class="row">
-                <h2>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h2>
-                {% if recipe.user == request.user %}
-                    <button type="button" class="fa fa-trash" style="font-size:24px; position: relative; margin:10px;
-                     background-color: none;" data-toggle="modal" data-target="#deleteModal"></button>
-                    <!-- Modal -->
-                    <div class="modal"  id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModal"> Are you sure that you want to delete your recipe {{recipe.name}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                Deleting this recipe will also delete it from any meets and favorite recipes of other users.
-                            </div>
-                            <div class="modal-footer">
-                            <a href="{% url 'web:recipe_delete' recipe.id  %}"  class="btn">Yes, delete</a>
-                            <a href="{% url 'web:recipe' recipe.user recipe.name  %}" type="button" class="btn">No, go back</a>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <a href="{% url 'web:edit_recipe'  recipe.name %}" type="button">
-                        <i class="fa fa-pencil" style="font-size:24px; position: relative; margin:10px; background-color:white"></i>
-                    </a>
-                {% endif %}
-
+    <!-- picture of recipe and details -->
+    <div class="col-md-4 cols-12 offset-md-1">
+        <h4>{{recipe.name}} - <a href="{% url 'web:myprofile' recipe.user %}">{{user.username}}</a></h4>
+        <h6>{{recipe.description}}</h6>
+        <div class="form-group">
+            {% if recipe.image %}
+            <img src="{{recipe.image}}" class="img-fluid mb-4"></br></br>
+            {% endif %}
         </div>
-        <h4 style="color: white;">{{recipe.description}}</h4>
-        <div style="padding: 10px;">
-            <figure >
-             <img
-              {% if recipe.image %}
-                src="{{recipe.image}}"
-              {% else %}
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
-              {% endif %} 
-              class="img-fluid"  alt="Responsive Image" 
-              width="307" height="240" /> 
-          </figure>
-          </div>
     </div>
-    <!-- Details -->
-    <div class="col-md-6 cols-12 align-self-center offset-md-1">
-        <h4 style="color: white;">Details</h4>
-        <div class="card" style="background-color: #9DC88D; width: max-content;">
+    <div class="col-md-4 cols-12 offset-md-1 align-self-center ">
+        <div class="card">
             <div class="card-body">
+                <h5 class="card-title">Details</h5>
                 <ul class="list-group list-group-flush">
-                    Tags: {{recipe.tags}} <br>
-                    Difficulty: {{recipe.difficulty}}<br>
-                    Preparation Time: {{recipe.preparationtime}}<br>
-                    Cooking time: {{recipe.cookingtime}}<br>
+                    <!--<li class="list-group-item">Tags:</li>
+                        <li class="list-group-item">Difficulty:</li>
+                        <li class="list-group-item">Preparation time:</li>
+                        <li class="list-group-item">Cooking time:</li>-->
+                    <li>Tags: {{recipe.tags}}</li>
+                    <li>Difficulty: {{recipe.difficulty}}</li>
+                    <li>Preparation Time: {{recipe.preparationtime}}</li>
+                    <li>Cooking time: {{recipe.cookingtime}}</li>
                 </ul>
             </div>
         </div>
+
     </div>
 </div>
-<!-- instructions and ingredients-->
 <div class="row">
-
     <div class="col-md-4 cols-12 offset-md-1">
         <h4>Ingredients</h4>
         <a href="{% url 'web:addtofav' id=recipe.id  ur='rec' %}">Add to Fav</a>
         <table class="table">
-            <tbody style="color: white; font-size: 1.1em;"> 
-              {% for Ingredients in recipe.ingredients_set.all %}
-              <tr>
-                  <td>{{Ingredients.name}}</td>
-                  <td>{{Ingredients.amount}}{{Ingredients.measurement}}
-                  </td>
-              <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
-                  <label for="checkbox_id"></label>
-                  </td>
-              </tr>
-              {% endfor %}
+            <tbody>
+                {% for Ingredients in recipe.ingredients_set.all %}
+                <tr>
+                    <td>{{Ingredients.name}}</td>
+                    <td>{{Ingredients.amount}}</td>
+                    <td><input type="checkbox" name="checkbox" id="checkbox_id" value="value">
+                        <label for="checkbox_id"></label>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
     <div class="col-md-4 cols-12 offset-md-1">
-        <h4 style="color: white;">Instructions</h4>
-        <div class="card" style="background-color: #9DC88D; width: auto;">
+        <div class="card">
             <div class="card-body">
-                <h4 class="card-title"></h4>
-                <p> {{recipe.instructions}}</p>
+                <h4 class="card-title">Instructions</h4>
+                <p> {{recipe.instructions}}
+                </p>
             </div>
         </div>
-       
-        
+
     </div>
-
 </div>
-
 {% endblock %}
