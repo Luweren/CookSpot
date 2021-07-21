@@ -87,18 +87,25 @@
                           </tr>
                         </thead>
                         <tbody style="font-size: 1.1em;">
-                            {% for ingredient in ingredients %}
+                            <form action="{% url 'web:standalonemeet' meet.user meet.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                            {% for ingredient in meet.recipe.ingredients_set.all %}
                                 <td>
                                     <label for="chooseUser"></label>
-                                    <select id="chooseUser" class="form-control" name="chooseUser">
-                                        <option selected>Choose a user</option>
+                                    <select id="chooseUser" class="form-control" name="chooseUser[]">
+                                        {% if ingredient.user %}
+                                            <option value="{{ingredient.user}}" selected="selected">{{ingredient.user}}</option>
+                                        {% else %}
+                                            <option value="non" selected="selected">Choose a user</option>
+                                        {% endif %}
                                             {% for user in meet.participants.all %} 
-                                        <option value="{{user}}" selected>{{user}}</option>
+                                                <option value="{{user}}">{{user}}</option>
                                             {% endfor %}
                                     </select>
                                 </td>
                                 <td> {{ingredient}} {{ingredient.amount}} </td></tr>
                             {% endfor %}
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            </form>
                         </tbody>
                     </table>   
                 </div>
