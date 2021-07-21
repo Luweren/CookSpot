@@ -210,12 +210,14 @@ def standalonemeet(request, User_username, Meets_name):
     ingredients = Ingredients.objects.filter(recipe=meet.recipe)
     all_users = User.objects.all().exclude(username = user.username)
 
+    
     if request.method == "POST":
-        for i in range(len(request.POST.getlist('chooseUser'))):
-            meet.recipe.ingredients_set.all()[i].user = request.REQUEST['chooseUser']    #User.objects.get(username = request.POST.getlist('chooseUser')[i])
-            meet.recipe.ingredients_set.all()[i].save()
-            print(meet.recipe.ingredients_set.all()[i].user)
-        print(ingredients)    
+        for i in range(len(meet.recipe.ingredients_set.all())):
+            currentIng = Ingredients.objects.get(name=meet.recipe.ingredients_set.all()[i])
+            if request.POST.getlist('chooseUser[]')[i] != "non":
+                currentIng.user = User.objects.get(username = request.POST.getlist('chooseUser[]')[i])
+                currentIng.save()
+       
 
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
