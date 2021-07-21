@@ -331,6 +331,15 @@ def search(request):
         return render(request, "search.html", {'searched': searched, 'recipes': recipes, 'names': names})
     return render(request, "search.html", {})
 
+def searchmeets(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        #meets = Meets.objects.filter(tags__contains=searched)
+        names = Meets.objects.filter(name__contains=searched)
+        return render(request, "searchmeets.html", {'searched': searched, 'meets': meets, 'names': names})
+    return render(request, "searchmeets.html", {})
+
+
 
 @login_required()
 def editUserDetails(request):

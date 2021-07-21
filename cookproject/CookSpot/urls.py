@@ -28,6 +28,7 @@ urlpatterns = [
     path('<str:User_username>/mycookgraphy/', views.myrecipes, name='mycookgraphy'),
     path('newmeet/post', views.newmeet_post, name='newmeet_post'),
     path('search/', views.search, name="search-things"),
+    path('searchmeets/', views.searchmeets, name="search-meets"),
     path('editUserDetails', views.editUserDetails, name="editUserDetails"),
     path("<int:id>/addtofav/<str:ur>", views.add_to_fav, name="addtofav"),
     path('<id>/delete', delete_view, name='delete_fav'),
