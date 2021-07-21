@@ -107,9 +107,14 @@ def newrecipe_post(request):
                                              cookingtime=request.POST['cookingtime'], image=request.POST['image'])
             for i in range(len(request.POST.getlist('ingredientname[]'))):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
+<<<<<<< HEAD
                                               amount=request.POST.getlist(
                                                   'ingredientamount[]')[i],
                                               measurement =request.POST.getlist('ingredientmeasurement[]')[i])
+=======
+                                              amount=request.POST.getlist('ingredientamount[]')[i],
+                                              measurement = request.POST.getlist('ingredientmeasurement[]')[i])
+>>>>>>> a674fb9ce429c4d8c1b014277fb016decc7005fc
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
