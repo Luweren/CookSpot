@@ -188,20 +188,40 @@ def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
     meet.participants.add(user)
-    ingredients = Ingredients.objects.filter(recipe=meet.recipe).order_by("name")
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe)
     all_users = User.objects.all().exclude(username = user.username)
     
     if request.method == "POST":
         invited = User.objects.get(username=request.POST['invited'])
         meet.participants.add(invited)
-        for i in ingredients:
-            ingredients[i].user = request.REQUEST['user']
-            ingredients[i].save()     
+        #ingredients[i].user = request.REQUEST['user']
+        #ingredients[i].save() 
+        #return redirect('standaloneMeet.html')    
     
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
                       {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})
 
+@login_required()
+def standalonemeet(request, User_username, Meets_name):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    meet.participants.add(user)
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe)
+    all_users = User.objects.all().exclude(username = user.username)
+
+    if request.method == "POST":
+        for i in range(len(request.POST.getlist('chooseUser'))):
+            meet.recipe.ingredients_set.all()[i].user = request.REQUEST['chooseUser']    #User.objects.get(username = request.POST.getlist('chooseUser')[i])
+            meet.recipe.ingredients_set.all()[i].save()
+            print(meet.recipe.ingredients_set.all()[i].user)
+        print(ingredients)    
+
+    if (user != 0 and meet != 0):
+        return render(request, "standaloneMeet.html",
+                      {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})
+        
+   
 
 @login_required()
 def meetjoin(request, User_username, Meets_name):

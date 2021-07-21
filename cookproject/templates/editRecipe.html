@@ -26,7 +26,7 @@
       <div class="form-group col-md-6">
         <label for="recipeLevel">Level</label>
         <select id="recipeLevel" value="{{recipe.difficulty}}" class="form-control" name="difficulty">
-          <option value="none"  selected>Choose...</option>
+          <option value="{{recipe.difficulty}}"  selected>{{recipe.difficulty}}</option>
           <option value="None" >Anyone can do it</option>
           <option value="Easy" >Beginner</option>
           <option value="Intermediate" >Intermediate</option>
@@ -89,7 +89,7 @@
                       <td>
                         <label for="ingredientMeasurement"></label>
                         <select id="ingredientMeasurement" class="form-control" name="ingredientmeasurement[]" value="{{Ingredients.measurement}}">
-                          <option selected>Choose...</option>
+                          <option value="{{Ingredients.measurement}}" selected>{{Ingredients.measurement}}</option>
                           <option value="g">g</option>
                           <option value="lb">lb</option>
                           <option value="oz">oz</option>
