@@ -109,7 +109,7 @@ def newrecipe_post(request):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
                                               amount=request.POST.getlist(
                                                   'ingredientamount[]')[i],
-                                              measurement = measurement=request.POST.getlist('ingredientmeasurement[]')[i])
+                                              measurement =request.POST.getlist('ingredientmeasurement[]')[i])
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
