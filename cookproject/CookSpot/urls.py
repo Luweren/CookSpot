@@ -4,7 +4,7 @@ from .views import delete_view
 
 app_name = 'web'
 urlpatterns = [
-    path("users/", views.users, name="users"),
+path("users/", views.users, name="users"),
     path("allrecipes/", views.allrecipes, name="allrecipes"),
     path("", views.homepage, name="home"),
     path("homepage/", views.homepage, name="home"),
@@ -23,6 +23,7 @@ urlpatterns = [
          views.meetjoin, name='meetjoin'),
     path('<str:User_username>/meet/<str:Meets_name>/invite',
          views.meetinvite, name='meetinvite'),
+    path('<str:User_username>/meet/<str:Meets_name>/useringredients', views.standalonemeet, name='standalonemeet'),
     path('<str:User_username>/meet/<str:Meets_name>/rate/<str:Target_username>',
          views.meetrate, name='rate'),
     path('rate/post', views.meetrate_post, name='rate_post'),
@@ -32,7 +33,15 @@ urlpatterns = [
          views.myrecipes, name='mycookgraphy'),
     path('newmeet/post', views.newmeet_post, name='newmeet_post'),
     path('search/', views.search, name="search-things"),
+    path('searchmeets/', views.searchmeets, name="search-meets"),
     path('editUserDetails', views.editUserDetails, name="editUserDetails"),
     path("<int:id>/addtofav/<str:ur>", views.add_to_fav, name="addtofav"),
     path('<id>/delete', delete_view, name='delete_fav'),
+    path("recipe_delete/<int:rec_id>", views.recipe_delete, name='recipe_delete'),
+    path("editRecipe/<str:User_username>/<str:Recipe_name>", views.edit_recipe, name='edit_recipe'),
+    path("editRecipe/<str:User_username>/<str:Recipe_name>/post",views.edit_recipe_post, name='edit_recipe_post'),
+    path("meet_delete/<int:meet_id>", views.meet_delete, name='meet_delete'),
+    path("editMeet/<str:Meet_name>", views.edit_meet, name='edit_meet'),
+    path("editMeet/<str:Meet_name>/post",views.edit_meet_post, name='edit_meet_post'),
+    path("<str:Meets_name>/uninvite/<str:User_username>", views.uninvite, name='uninvite'),
 ]

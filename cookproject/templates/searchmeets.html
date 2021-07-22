@@ -1,0 +1,61 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<!--{% if searched %}
+    <h1>You searched for {{ searched }} </h1>
+    {% if meets|length == 0 %}
+        <h3> Sorry, no meets have the tag {{searched}}</h3>
+    {% else %}
+        <h3>Here are the meets that contain {{ searched }} in their tags!</h3>
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+        {% for meet in meets %}
+                <div class="card" style="width: 18rem; margin: 10px">
+                    <img src="{{ recipe.image }}" class="card-img-top" >
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/{{meet.user}}/meet/{{meet.name}}">{{meet.name}}</a> by <a href="/{{meet.user}}/myprofile">{{meet.user}}</a></h5>
+                            <h4>
+                                {% if i.maximumparticipants %}
+                                  Max. {{i.maximumparticipants}} people.<br>
+                                  {{i.participating}} people have already accepted.
+                                {% else %}
+                                  Unlimited amount of people.
+                                {% endif %}
+                              </h4>
+                            <p class="card-text">{{recipe.description}}.</p>
+                        </div>
+                </div>
+            {% endfor %}
+    </div>
+    {% endif %}-->
+
+    {% if names|length == 0 %}
+        <h3> Sorry, no meets contain {{searched}} in their name</h3>
+    {% else %}
+        <h3>Here are the meets that contain {{ searched }} in their name!</h3>  
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+            {% for name in names %}
+                    <div class="card" style="width: 18rem; margin: 10px">
+                        <!--<img src="{{ name.image }}" class="card-img-top" >-->
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="/{{name.user}}/meet/{{name.name}}">{{name.name}}</a> by <a href="/{{name.user}}/myprofile">{{name.user}}</a></h5>
+                                <!--p class="card-text">{{name.description}}.</p-->
+                                <!--h4>
+                                    {% for i in meets %}
+                                    {% if i.maximumparticipants %}
+                                      Max. {{i.maximumparticipants}} people.<br>
+                                      {{i.participating}} people have already accepted.
+                                    {% else %}
+                                      Unlimited amount of people.
+                                    {% endif %}
+                                    {% endfor %}
+                                  </h4-->
+                            </div>
+                    </div>
+                {% endfor %}
+        </div>
+    {% endif %}
+{% else %} 
+        <h1> pls search something!</h1>
+{% endif %}
+{% endblock %}

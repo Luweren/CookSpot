@@ -3,25 +3,26 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row">
-    <div class="cols-12 align-self-center" style="text-align: center;">
-      <h1>My Cookgraphy</h1>
-    </div>
+    <h1>My Cookgraphy</h1>
   </div>
-
-
-  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+  <div class="row" style="display: flex; flex-direction: row; flex-wrap: wrap">
     {% for recipe in user.recipe_set.all %}
-    <div class="card" style="width: 18rem; margin: 10px">
-      <img class="card-img-top" {% if recipe.image != ""%} src="{{recipe.image}}" {% else %}
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
-        {% endif %} height="300" alt="...">
-      <div class="card-body">
-        <h5 class="card-title"><a href="/{{recipe.user}}/recipe/{{recipe.name}}">{{recipe.name}}</a> by <a
-            href="/{{recipe.user}}/myprofile">{{recipe.user}}</a></h5>
-        <p class="card-text">{{recipe.description}}.</p>
-      </div>
+    <div style="padding: 10px;">
+      <figure >
+       <img
+        {% if recipe.image != ""%}
+          src="{{recipe.image}}"
+        {% else %}
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/488px-No-Image-Placeholder.svg.png"
+        {% endif %} 
+        class="img-fluid"  alt="Responsive Image" 
+        width="307" height="240" /> 
+        <figcaption><h4><a href="/{{recipe.user}}/recipe/{{recipe.name}}">{{recipe.name}}</a> </h4></figcaption>
+      </figure>
     </div>
+    
     {% endfor %}
+
   </div>
 </div>
 

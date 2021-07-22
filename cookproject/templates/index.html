@@ -23,14 +23,39 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
   </script>
   <!-- checkbox symbol -->
+  <style>
+    #title {font-family: 'Zen Loop';}
+    body {
+      background-color: #164A41;
+    }
+    .navbar-brand
+    {
+      font-size: 2.5rem;
+    }
+    .navbar-nav {
+      font-size: 1.3rem;
+    }
+    .btn {
+      background-color: #9DC88D !important;
+      color: black !important;
+    }
+    
+    h1, h2, h3, h4, a {
+      color: #9DC88D;
+      font-family: 'Quicksand', sans-serif;
+    }
+    li > a {
+      color:white !important;
+    }
+  </style>
   {% block css %} {% endblock css %}
 
   <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="/homepage">CookSpot</a>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9DC88D;">
+    <a class="navbar-brand" href="/homepage" id="title" style="color:white !important;">CookSpot</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -40,10 +65,10 @@
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="/{{user.username}}/mycookgraphy">My Cookgraphy </a>
+          <a class="nav-link" href="/{{request.user.username}}/mycookgraphy">My Cookgraphy </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/{{user.username}}/newmeet">Let's cook</a>
+          <a class="nav-link" href="/{{request.user.username}}/newmeet">Let's cook</a>
         </li>
         {% else %}
         <li class="nav-item">
@@ -71,14 +96,16 @@
       </ul>
 
     </div>
+
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       {% block search %}
       <form class="form-inline" class="text-right" method="POST" action="{% url 'web:search-things' %}" id="searchbar">
         {% csrf_token %}
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
-        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" style="background-color: white !important; color: black !important;">Search</button>
       </form>
       {% endblock %}
+
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item">
@@ -94,14 +121,15 @@
         </li>
         {% endif %}
       </ul>
+
     </div>
   </nav>
   <div class="container-fluid">
     {% block content %}{% endblock %}
   </div>
 
-
-
+  {% block js %}{% endblock %}
+        
 </body>
 
 </html>

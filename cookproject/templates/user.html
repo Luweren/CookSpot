@@ -1,28 +1,48 @@
 {% extends "index.html" %}
 {% block css %}
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');
-
-  h3 {
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');  
+  h1 {
     font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 60px;
   }
-
   img {
     border-radius: 70%;
     width: 150px;
   }
-
   @media (max-width: 767px) {
-    img {
+    img { 
       display: inline-block;
     }
-
+  }
+  @media (min-width: 768px){
+    img {
+    float: right;
+    }
+  }
+  .card{
+    background-color: #9DC88D !important;
+    margin: 10px;
+  }
+  .card  button, .btn{
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .card li > a {
+    background-color: #9DC88D !important;
+    
   }
 
-  @media (min-width: 768px) {
-    img {
-      float: right;
-    }
+  .card li {
+    background-color: #9DC88D;
+  }
+  h4 {color: black;}
+
+  #detailsList > li {
+    background-color: #9DC88D;
+    color: white;
+    font-size: 19px;
   }
 </style>
 {% endblock %}

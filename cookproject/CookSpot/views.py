@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, request
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
+from django.http import QueryDict
 import numpy.random as rand
 import datetime
 from .models import Recipe, Ingredients, Meets, Profile, UserRating, Favourite
@@ -33,7 +34,7 @@ def users(request):
     if request.method == "POST":
         searched = request.POST['searched']
         searchedUsers = User.objects.filter(username__contains=searched)
-        return render(request, "users.html", {'searched': searched, 'users': searchedUsers})
+        return render(request, "searchUser.html", {'searched': searched, 'users': searchedUsers})
     # return render(request, "users.html", {})
 
     return render(request, "users.html", {'users': users})
@@ -92,6 +93,7 @@ def newrecipe(response, User_username):
 
 @login_required()
 def newrecipe_post(request):
+    
     user2 = User.objects.get(username=request.POST['username'])
     try:
         user1 = user2
@@ -101,15 +103,14 @@ def newrecipe_post(request):
             return redirect("/" + "homepage")
         except (rec.DoesNotExist):
             recipe = user1.recipe_set.create(name=request.POST['recipename'], difficulty=request.POST['difficulty'],
-                                             tags=request.POST['tags'], description=request.POST['description'],
-                                             instructions=request.POST['instructions'],
-                                             preparationtime=request.POST['preparationtime'],
-                                             cookingtime=request.POST['cookingtime'], image=request.POST['image'])
+                            tags=request.POST['tags'], description=request.POST['description'],
+                            instructions=request.POST['instructions'],
+                            preparationtime=request.POST['preparationtime'],
+                            cookingtime=request.POST['cookingtime'], image=request.POST['image'])
             for i in range(len(request.POST.getlist('ingredientname[]'))):
                 recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
-                                              amount=request.POST.getlist(
-                                                  'ingredientamount[]')[i] +
-                                              request.POST.getlist('ingredientmeasurement[]')[i])
+                            amount=request.POST.getlist('ingredientamount[]')[i],
+                            measurement=request.POST.getlist('ingredientmeasurement[]')[i])
             user1.save()
             return redirect("/" + request.POST['username'] + "/recipe/" + request.POST['recipename'])
     except (KeyError, user2.DoesNotExist):
@@ -151,13 +152,25 @@ def add_to_fav(request, id, ur):
         Favourite.objects.get_or_create(user=user, cookfav=cook)
     return redirect('/')
 
-
 @login_required()
 def delete_view(request, id):
     obj = get_object_or_404(Favourite, id=id)
     obj.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required()
+def recipe_delete(request, rec_id):
+    recipe = Recipe.objects.get(id = rec_id)
+    obj = get_object_or_404(Recipe, id=rec_id)
+    obj.delete()
+    return render(request, "userrecipes.html", context={'user': request.user})
+
+@login_required()
+def meet_delete(request, meet_id):
+    meet = Meets.objects.get(id = meet_id)
+    obj = get_object_or_404(Meets, id=meet_id)
+    obj.delete()
+    return render(request, "meets.html", context={'meets': Meets.objects.all()})
 
 @login_required()
 def meets(request):
@@ -167,7 +180,6 @@ def meets(request):
         searchedMeats = Meets.objects.filter(name__contains=searched)
         return render(request, "meets.html", {'searched': searched, 'meats': searchedMeats})
     # return render(request, "meets.html", {})
-
     return render(request, "meets.html", context={'meets': meets})
 
 
@@ -175,13 +187,43 @@ def meets(request):
 def meet(request, User_username, Meets_name):
     user = User.objects.get(username=User_username)
     meet = user.meets_set.get(name=Meets_name)
-    ingredients = Ingredients.objects.filter(
-        recipe=meet.recipe).order_by("name")
-    all_users = User.objects.all()
+    meet.participants.add(user)
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe)
+    all_users = User.objects.all().exclude(username = user.username)
+    
+    if request.method == "POST":
+        invited = User.objects.get(username=request.POST['invited'])
+        meet.participants.add(invited)
+        #ingredients[i].user = request.REQUEST['user']
+        #ingredients[i].save() 
+        #return redirect('standaloneMeet.html')    
+    
     if (user != 0 and meet != 0):
         return render(request, "standaloneMeet.html",
                       {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})
 
+@login_required()
+def standalonemeet(request, User_username, Meets_name):
+    user = User.objects.get(username=User_username)
+    meet = user.meets_set.get(name=Meets_name)
+    meet.participants.add(user)
+    ingredients = Ingredients.objects.filter(recipe=meet.recipe)
+    all_users = User.objects.all().exclude(username = user.username)
+
+    
+    if request.method == "POST":
+        for i in range(len(meet.recipe.ingredients_set.all())):
+            currentIng = Ingredients.objects.get(name=meet.recipe.ingredients_set.all()[i])
+            if request.POST.getlist('chooseUser[]')[i] != "non":
+                currentIng.user = User.objects.get(username = request.POST.getlist('chooseUser[]')[i])
+                currentIng.save()
+       
+
+    if (user != 0 and meet != 0):
+        return render(request, "standaloneMeet.html",
+                      {'user': user, 'all_users': all_users, 'meet': meet, 'ingredients': ingredients})
+        
+   
 
 @login_required()
 def meetjoin(request, User_username, Meets_name):
@@ -213,8 +255,11 @@ def meetinvite(request, User_username, Meets_name):
         scores.append(score)
     userandscore = list(zip(scores, givenusers))
     userandscore.sort(reverse=True)
-
-    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore})
+    if request.method == "POST":
+        searched = request.POST['searched']
+        users = User.objects.filter(username__contains=searched)
+        return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all(), 'searched': searched, 'searched_users': users})
+    return render(request, "invite.html", {'owner': owner, 'meet': meet, 'givenscores': userandscore, 'allusers': User.objects.all().exclude(username = owner.username)})
 
 
 @login_required()
@@ -235,8 +280,7 @@ def meetrate_post(request):
     user = User.objects.get(username=request.POST['cuser'])
     target = User.objects.get(username=request.POST['target'])
     meet = Meets.objects.get(name=request.POST['meet'])
-    user.givenratings.create(fromuser=user, touser=target,
-                             meet=meet, rating=request.POST['rating'])
+    user.givenratings.create(fromuser=user, touser=target, meet=meet, rating=request.POST['rating'])
     user.save()
     return redirect("/" + meet.user.username + "/meet/" + meet.name + "/")
 
@@ -254,13 +298,16 @@ def editrate_post(request):
 @login_required()
 def newmeet(response, User_username):
     user = User.objects.get(username=User_username)
-
-    return render(response, "newMeet.html", {'user': user})
+    fav_list = Favourite.objects.filter(user=user)
+    return render(response, "newMeet.html", {'user': user, 'favlist': fav_list})
 
 
 @login_required()
 def newmeet_post(request):
     user2 = User.objects.get(username=request.POST['username'])
+    txt = request.POST['recipe']
+    x = txt.split(", ")
+    Favouriteuser = User.objects.get(username=x[1])
     try:
         user1 = user2
         meet = Meets
@@ -268,10 +315,13 @@ def newmeet_post(request):
             meet = user1.meets_set.get(name=request.POST['meetName'])
             return redirect("/" + "homepage")
         except (meet.DoesNotExist):
-            thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
+            try:
+                thisrecipe = user1.recipe_set.get(name=x[0])
+            except (Recipe.DoesNotExist):
+                thisrecipe = Favouriteuser.recipe_set.get(name=x[0])
             Meet = user1.meets_set.create(name=request.POST['meetName'], maximumparticipants=request.POST['pnumber'],
                                           recipe=thisrecipe, date=request.POST['meetDate'],
-                                          desc=request.POST['description'], location=request.POST['location'])
+                                          desc=request.POST['description'])
             Meet.participants.add(user1)
             user1.save()
             return redirect("/" + request.POST['username'] + "/meet/" + request.POST['meetName'])
@@ -288,6 +338,15 @@ def search(request):
         names = Recipe.objects.filter(name__contains=searched)
         return render(request, "search.html", {'searched': searched, 'recipes': recipes, 'names': names})
     return render(request, "search.html", {})
+
+def searchmeets(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        #meets = Meets.objects.filter(tags__contains=searched)
+        names = Meets.objects.filter(name__contains=searched)
+        return render(request, "searchmeets.html", {'searched': searched, 'meets': meets, 'names': names})
+    return render(request, "searchmeets.html", {})
+
 
 
 @login_required()
@@ -310,3 +369,75 @@ def editUserDetails(request):
         user.save()
         return render(request, "user.html", {'user': user})
     return render(request, "user.html", {'user': user})
+
+@login_required()
+def edit_recipe(request, User_username, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    return render(request, "editRecipe.html", {'recipe': recipe})
+
+@login_required()
+def edit_recipe_post(request, User_username, Recipe_name):
+    recipe = Recipe.objects.get(name = Recipe_name)
+    if request.method == "POST":
+        if (request.POST['recipename']):
+            recipe.name = request.POST['recipename']
+        if (request.POST['description']):
+            recipe.description = request.POST['description']
+        if (request.POST['tags']):
+            recipe.tags = request.POST['tags']
+        if (request.POST['difficulty']):
+            recipe.difficulty = request.POST['difficulty']
+        if (request.POST['preparationtime']):
+            recipe.preparationtime = request.POST['preparationtime']
+        if (request.POST['cookingtime']):
+            recipe.cookingtime = request.POST['cookingtime']
+        if (request.POST['image']):
+            recipe.image = request.POST['image']
+        if (request.POST['instructions']):
+            recipe.instructions = request.POST['instructions']
+        
+        length = len(request.POST.getlist('ingredientname[]'))
+        for i in range(length):
+            if len(recipe.ingredients_set.all())!=0:
+                recipe.ingredients_set.all()[0].delete()
+        
+
+        for i in range(len(request.POST.getlist('ingredientname[]'))):
+            if request.POST.getlist('ingredientname[]')[i] != '':
+                recipe.ingredients_set.create(name=request.POST.getlist('ingredientname[]')[i],
+                amount=request.POST.getlist('ingredientamount[]')[i],
+                            measurement=request.POST.getlist('ingredientmeasurement[]')[i])
+        
+
+        recipe.save()
+
+        return render(request, "recipe.html", {'recipe': recipe})
+    return render(request, "recipe.html", {'recipe': recipe})
+
+@login_required()
+def edit_meet(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    return render(request, "editMeet.html", {'meet': meet})
+
+@login_required()
+def edit_meet_post(request, Meet_name):
+    meet = Meets.objects.get(name = Meet_name)
+    if request.method == "POST":
+        if (request.POST['meetName']):
+            meet.name = request.POST['meetName']
+        if (request.POST['meetDate']):
+            meet.date = request.POST['meetDate']
+        if (request.POST['description']):
+            meet.desc = request.POST['description']
+        if (request.POST['pnumber']):
+            meet.maximumparticipants = request.POST['pnumber']
+        meet.save()
+        return render(request, "meets.html", {'meets': Meets.objects.all()})
+    return render(request, "meets.html", {'meets': Meets.objects.all()})
+
+@login_required()
+def uninvite(request, Meets_name, User_username):
+    toUninvite = User.objects.get(username=User_username)
+    meet = Meets.objects.get(name = Meets_name)
+    meet.participants.remove(toUninvite)
+    return render(request, "standaloneMeet.html", {'meet': meet})

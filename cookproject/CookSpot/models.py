@@ -59,13 +59,13 @@ class Recipe(models.Model):
 
 
 class Ingredients(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT, related_name='chosenuser')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=254)
     amount = models.CharField(max_length=254)
-
+    measurement = models.CharField(max_length=254)
     def __str__(self):
         return self.name
-
 
 class Meets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -91,7 +91,7 @@ class UserRating(models.Model):
     touser = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='gottenratings')
     meet = models.ForeignKey(
-        Meets, blank=True, null=True, on_delete=models.PROTECT)
+        Meets, blank=True, null=True, on_delete=models.SET_NULL)
     rating = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)])
 
@@ -119,8 +119,8 @@ class Invite(models.Model):
 
 class Favourite(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True)
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name='favourites')
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, blank=True, null=True)
+        Recipe, on_delete=models.CASCADE, related_name='favrecipe', blank=True, null=True)
     cookfav = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='favcook', null=True, blank=True)
