@@ -7,7 +7,7 @@
       <h1>Our M-eats</h1>
     </div>
     <div class="col-md-6">
-      <form class="form-inline" class="text-right" method="POST" name="meets" action="{% url 'web:meets' %}">
+      <form class="form-inline" class="text-right" method="POST" name="meets" action="{% url 'web:search-meets' %}" id="searchbar">
         {% csrf_token %}
         <input class="form-control mr-sm-2" type="search" placeholder="Search for m-eats" aria-label="Search"
           name="searched">
