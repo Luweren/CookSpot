@@ -57,15 +57,6 @@ class Recipe(models.Model):
         return self.name
 
 
-class Ingredients(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT, related_name='chosenuser')
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    name = models.CharField(max_length=254)
-    amount = models.CharField(max_length=254)
-    measurement = models.CharField(max_length=254)
-    def __str__(self):
-        return self.name
-
 
 class Meets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -79,6 +70,17 @@ class Meets(models.Model):
     def participating(self):
         return len(self.participants.all())
 
+    def __str__(self):
+        return self.name
+
+
+class Ingredients(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT, related_name='chosenuser')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    meet = models.ForeignKey(Meets, blank=True, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=254)
+    amount = models.CharField(max_length=254)
+    measurement = models.CharField(max_length=254)
     def __str__(self):
         return self.name
 
