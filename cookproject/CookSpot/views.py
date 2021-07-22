@@ -213,7 +213,7 @@ def standalonemeet(request, User_username, Meets_name):
     
     if request.method == "POST":
         for i in range(len(meet.recipe.ingredients_set.all())):
-            currentIng = Ingredients.objects.get(name=meet.recipe.ingredients_set.all()[i])
+            currentIng = meet.recipe.ingredients_set.all()[i]
             if request.POST.getlist('chooseUser[]')[i] != "non":
                 currentIng.user = User.objects.get(username = request.POST.getlist('chooseUser[]')[i])
                 currentIng.save()
@@ -314,7 +314,7 @@ def newmeet_post(request):
         except (meet.DoesNotExist):
             thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
             Meet = user1.meets_set.create(name=request.POST['meetName'], maximumparticipants=request.POST['pnumber'],
-                                          recipe=thisrecipe, date=request.POST['meetDate'],
+                                          recipe=thisrecipe, ingredients=thisrecipe.ingredients, date=request.POST['meetDate'],
                                           desc=request.POST['description'])
             Meet.participants.add(user1)
             user1.save()
