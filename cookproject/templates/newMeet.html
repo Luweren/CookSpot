@@ -23,11 +23,11 @@
       <select id="recipe" class="form-control" name="recipe">
         <option value="none" selected>Choose from own/favorite Recipes...</option>
         {% for recipe in user.recipe_set.all %}
-          <option value="{{recipe.name}}">{{recipe.name}}</option>
+          <option value="{{recipe.name}}, {{recipe.user}}">{{recipe.name}}</option>
         {% endfor %}
         {% for rec in favlist%}
         {% if rec.recipe %}
-          <option value="{{rec.recipe.name}}">{{rec.recipe.name}}</option>
+          <option value="{{rec.recipe.name}}, {{rec.recipe.user}}">{{rec.recipe.name}}</option>
         {% endif %}
         {% endfor %}
       </select>
@@ -62,7 +62,7 @@
       <label class="form-check-label" for="inlineRadio2">Public</label>
     </div>
   </div>
-  <div style="display: none" class="form-group">
+  <div  style="display: none" class="form-group">
     <label for="invite">Who do you want to invite?</label>
     <input type="text" class="form-control" id="invite" name="cookingtime" placeholder="Enter username? i guess">
   </div>

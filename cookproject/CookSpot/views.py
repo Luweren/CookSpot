@@ -305,6 +305,9 @@ def newmeet(response, User_username):
 @login_required()
 def newmeet_post(request):
     user2 = User.objects.get(username=request.POST['username'])
+    txt = request.POST['recipe']
+    x = txt.split(", ")
+    Favouriteuser = User.objects.get(username=x[1])
     try:
         user1 = user2
         meet = Meets
@@ -312,7 +315,10 @@ def newmeet_post(request):
             meet = user1.meets_set.get(name=request.POST['meetName'])
             return redirect("/" + "homepage")
         except (meet.DoesNotExist):
-            thisrecipe = user1.recipe_set.get(name=request.POST['recipe'])
+            try:
+                thisrecipe = user1.recipe_set.get(name=x[0])
+            except (Recipe.DoesNotExist):
+                thisrecipe = Favouriteuser.recipe_set.get(name=x[0])
             Meet = user1.meets_set.create(name=request.POST['meetName'], maximumparticipants=request.POST['pnumber'],
                                           recipe=thisrecipe, date=request.POST['meetDate'],
                                           desc=request.POST['description'])
