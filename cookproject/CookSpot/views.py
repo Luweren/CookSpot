@@ -298,8 +298,8 @@ def editrate_post(request):
 @login_required()
 def newmeet(response, User_username):
     user = User.objects.get(username=User_username)
-
-    return render(response, "newMeet.html", {'user': user})
+    fav_list = Favourite.objects.filter(user=user)
+    return render(response, "newMeet.html", {'user': user, 'favlist': fav_list})
 
 
 @login_required()
@@ -365,12 +365,12 @@ def editUserDetails(request):
     return render(request, "user.html", {'user': user})
 
 @login_required()
-def edit_recipe(request, Recipe_name):
+def edit_recipe(request, User_username, Recipe_name):
     recipe = Recipe.objects.get(name = Recipe_name)
     return render(request, "editRecipe.html", {'recipe': recipe})
 
 @login_required()
-def edit_recipe_post(request, Recipe_name):
+def edit_recipe_post(request, User_username, Recipe_name):
     recipe = Recipe.objects.get(name = Recipe_name)
     if request.method == "POST":
         if (request.POST['recipename']):

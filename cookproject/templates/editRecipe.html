@@ -16,7 +16,7 @@
 {% block title %} Edit recipe {% endblock%}
 {% block content %}
 <h3>Edit your recipe</h3>
-<form action="{% url 'web:edit_recipe_post' recipe.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+<form action="{% url 'web:edit_recipe_post' user.username recipe.name %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
     <input name="username" value="{{user.username}}" hidden/>
     <div class="form-row">
       <div class="form-group col-md-6">
@@ -98,11 +98,10 @@
                           <option value="ml">ml</option>
                           <option value="tsp">tsp</option>
                           <option value="Tbsp">Tbsp</option>
-              
                         </select>
                       </td>
                       <td><label for="ingredientName"></label>
-                        <input type="text" class="form-control" id="ingredientName"  name="ingredientname[]" value="{{Ingredients.name}}">
+                        <input type="text" class="form-control" id="ingredientName" placeholder="Leave Empty to Delete" name="ingredientname[]" value="{{Ingredients.name}}">
                       </td>
                     </tr>
                     
